@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Table(name = "beneficiarios")
 @PrimaryKeyJoinColumn(name = "usuario_id")
 @Schema(description = "Representa um Beneficiário com critérios de prioridade e tipo de entidade")
-public class Beneficiario extends Usuario {
+public class BeneficiarioEntity extends UsuarioEntity {
 
     @NotNull(message = "O tipo de beneficiário é obrigatório")
     @Enumerated(EnumType.STRING)

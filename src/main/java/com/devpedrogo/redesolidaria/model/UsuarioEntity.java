@@ -21,7 +21,7 @@ import com.devpedrogo.redesolidaria.enums.Perfil;
 @Table(name = "usuarios")
 @Inheritance(strategy = InheritanceType.JOINED) //Define a estratégia de herança relacional
 @Schema(description = "Classe base que representa qualquer usuário do sistema")
-public abstract class Usuario {
+public abstract class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
