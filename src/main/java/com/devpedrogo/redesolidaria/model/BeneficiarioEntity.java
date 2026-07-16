@@ -18,8 +18,8 @@ import jakarta.persistence.Enumerated;
 @SuperBuilder
 @Getter
 @Setter
-@Entity
 @DiscriminatorValue("BENEFICIARIO")
+@Entity
 public class BeneficiarioEntity extends UsuarioEntity {
  
     @Enumerated(EnumType.STRING)

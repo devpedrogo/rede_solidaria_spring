@@ -27,7 +27,7 @@ import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Table;
 
 @NoArgsConstructor
-@SuperBuilder
+@lombok.experimental.SuperBuilder
 @Getter
 @Setter
 @Entity

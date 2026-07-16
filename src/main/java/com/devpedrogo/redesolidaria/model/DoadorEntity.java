@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
 @SuperBuilder
-@Entity
+@NoArgsConstructor
 @Getter
 @Setter
 @DiscriminatorValue("DOADOR")
+@Entity
 public class DoadorEntity extends UsuarioEntity {
     
 }
