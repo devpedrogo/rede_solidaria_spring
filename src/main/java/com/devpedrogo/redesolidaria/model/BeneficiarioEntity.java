@@ -10,7 +10,6 @@ import com.devpedrogo.redesolidaria.enums.TipoBeneficiario;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -18,7 +17,6 @@ import jakarta.persistence.Enumerated;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
 @DiscriminatorValue("BENEFICIARIO")
 public class BeneficiarioEntity extends UsuarioEntity {
  

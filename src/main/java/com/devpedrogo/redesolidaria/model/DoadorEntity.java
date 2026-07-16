@@ -1,15 +1,12 @@
 package com.devpedrogo.redesolidaria.model;
 
 import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+@lombok.experimental.SuperBuilder
 @Getter
 @Setter
-@Entity
 @DiscriminatorValue("DOADOR")
 public class DoadorEntity extends UsuarioEntity {
     

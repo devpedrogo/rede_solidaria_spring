@@ -1,5 +1,6 @@
 package com.devpedrogo.redesolidaria.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,13 +26,15 @@ import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Table;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@lombok.experimental.SuperBuilder
 @Getter
 @Setter
 @Entity
 @Table(name = "usuarios")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
-public abstract class UsuarioEntity {
+public abstract class UsuarioEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
