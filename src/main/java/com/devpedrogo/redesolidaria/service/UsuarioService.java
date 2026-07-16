@@ -33,7 +33,7 @@ public class UsuarioService {
                 .endereco(doadorDto.getEndereco())
                 .perfis(Set.of(Perfil.ROLE_DOADOR))
                 .build();
-                
+
         usuarioRepository.save(novoDoador);
     }
 }
