@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import java.util.Set;
 
 import com.devpedrogo.redesolidaria.enums.Perfil;
@@ -27,7 +29,7 @@ import jakarta.persistence.Table;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@lombok.experimental.SuperBuilder
+@SuperBuilder
 @Getter
 @Setter
 @Entity
