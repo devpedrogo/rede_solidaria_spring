@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("DOADOR")
-public class DoadorEntity extends UsuarioEntity {
+@DiscriminatorValue("ADMIN")
+public class AdminEntity extends UsuarioEntity {
     
 }

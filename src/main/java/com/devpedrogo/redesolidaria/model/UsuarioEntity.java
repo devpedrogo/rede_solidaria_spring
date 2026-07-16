@@ -1,52 +1,54 @@
 package com.devpedrogo.redesolidaria.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;
 
 import com.devpedrogo.redesolidaria.enums.Perfil;
 
-@AllArgsConstructor
-@RequiredArgsConstructor
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Table;
+
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "usuarios")
-@Inheritance(strategy = InheritanceType.JOINED) //Define a estratégia de herança relacional
-@Schema(description = "Classe base que representa qualquer usuário do sistema")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
 public abstract class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "ID autoincrementado gerado pelo banco", example = "1")
     private Integer id;
 
-    @NotBlank(message = "O nome é obrigatório")
-    @Size(min = 3, max = 100)
     @Column(nullable = false, length = 100)
     private String nome;
 
-    @NotBlank(message = "O telefone é obrigatório")
     @Column(nullable = false, length = 20)
     private String telefone;
 
-    @NotBlank(message = "O e-mail é obrigatório")
-    @Email(message = "Insira um e-mail válido")
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @NotBlank(message = "O endereço é obrigatório")
     @Column(nullable = false)
     private String endereco;
 
-    @NotBlank(message = "A senha é obrigatória")
     @Column(nullable = false)
     private String senha;
 
