@@ -5,8 +5,8 @@ import com.devpedrogo.redesolidaria.model.ItemDoacaoEntity;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.model.DoacaoEfetivadaEntity;
 import com.devpedrogo.redesolidaria.enums.StatusItem;
-import com.devpedrogo.redesolidaria.repository.ItemDoacaoRepository;
-import com.devpedrogo.redesolidaria.repository.DoacaoEfetivadaRepository;
+import com.devpedrogo.redesolidaria.repository.IItemDoacaoRepository;
+import com.devpedrogo.redesolidaria.repository.IDoacaoEfetivadaRepository;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemDoacaoService {
 
-    private final ItemDoacaoRepository itemDoacaoRepository;
-    private final DoacaoEfetivadaRepository doacaoEfetivadaRepository;
+    private final IItemDoacaoRepository itemDoacaoRepository;
+    private final IDoacaoEfetivadaRepository doacaoEfetivadaRepository;
     private final IDoadorRepository doadorRepository;
 
     @Transactional
