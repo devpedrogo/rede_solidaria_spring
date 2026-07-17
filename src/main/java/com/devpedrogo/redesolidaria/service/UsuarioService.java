@@ -1,5 +1,6 @@
 package com.devpedrogo.redesolidaria.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -35,5 +36,19 @@ public class UsuarioService {
                 .build();
 
         usuarioRepository.save(novoDoador);
+    }
+
+    public List<UsuarioEntity> listarUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    public void deletarUsuario(Integer id) throws Exception {
+        UsuarioEntity usuario = usuarioRepository.findById(id).orElse(null);
+
+        if (usuario == null) {
+            throw new Exception("Usuário não encontrado.");
+        }
+
+        usuarioRepository.delete(usuario);
     }
 }
