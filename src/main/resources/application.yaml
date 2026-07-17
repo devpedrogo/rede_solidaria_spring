@@ -2,9 +2,9 @@ spring:
   application:
     name: redesolidaria
   datasource:
-    url: jdbc:postgresql://postgres.orrlxzppgavfrxruibas:Solidaria3211@aws-1-sa-east-1.pooler.supabase.com:5432/postgres
-    username: postgres.orrlxzppgavfrxruibas
-    password: Solidaria3211
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
