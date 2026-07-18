@@ -1,5 +1,7 @@
 package com.devpedrogo.redesolidaria.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
@@ -30,5 +32,9 @@ public class DoadorService {
                 .build();
 
         doadorRepository.save(doador);
+    }
+
+    public List<DoadorEntity> listarDoadores() {
+        return doadorRepository.findAll();
     }
 }

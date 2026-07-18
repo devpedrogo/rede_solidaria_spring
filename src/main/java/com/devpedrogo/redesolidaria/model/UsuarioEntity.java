@@ -1,5 +1,6 @@
 package com.devpedrogo.redesolidaria.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.Set;
 
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.CollectionTable;
@@ -54,6 +56,11 @@ public abstract class UsuarioEntity{
 
     @Column(nullable = false)
     private String senha;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private StatusUsuario status = StatusUsuario.ATIVO;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
