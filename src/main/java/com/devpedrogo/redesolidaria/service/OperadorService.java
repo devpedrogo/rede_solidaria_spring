@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
 import com.devpedrogo.redesolidaria.model.OperadorEntity;
-import com.devpedrogo.redesolidaria.repository.OperadorRepository;
+import com.devpedrogo.redesolidaria.repository.IOperadorRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OperadorService {
-    private final OperadorRepository operadorRepository;
+    private final IOperadorRepository operadorRepository;
     
     public void cadastrarOperador(OperadorDto operadorDto) throws Exception {
         OperadorEntity operador = operadorRepository.findByEmail(operadorDto.getEmail()).orElse(null);

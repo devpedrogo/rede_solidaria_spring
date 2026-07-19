@@ -8,10 +8,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
+import com.devpedrogo.redesolidaria.dto.BeneficiarioDto;
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
+import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.model.OperadorEntity;
+import com.devpedrogo.redesolidaria.service.BeneficiarioService;
 import com.devpedrogo.redesolidaria.service.DoadorService;
 import com.devpedrogo.redesolidaria.service.OperadorService;
 
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UsuarioController {
     private final DoadorService doadorService;
     private final OperadorService operadorService;
+    private final BeneficiarioService beneficiarioService;
 
     @PostMapping("/doadores")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,6 +45,20 @@ public class UsuarioController {
     public List<DoadorEntity> listarDoadores() {
         return doadorService.listarDoadores();
     }
+
+    @PostMapping("/beneficiarios")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void cadastrarBeneficiario(@Valid @RequestBody BeneficiarioDto beneficiarioDto) throws Exception {
+        beneficiarioService.criarBeneficiario(beneficiarioDto);
+    }
+
+    @GetMapping("/beneficiarios")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BeneficiarioEntity> listarBeneficiarios() {
+        return beneficiarioService.listarBeneficiarios();
+    }
+
+
 
     @PostMapping("/operadores")
     @ResponseStatus(HttpStatus.CREATED)
