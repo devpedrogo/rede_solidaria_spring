@@ -5,6 +5,7 @@ import com.devpedrogo.redesolidaria.enums.TipoBeneficiario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,9 +34,9 @@ public class BeneficiarioDto {
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
-    @NotBlank(message = "O tipo de beneficiário é obrigatório")
+    @NotNull(message = "O tipo de beneficiário é obrigatório")
     private TipoBeneficiario tipoBeneficiario;
 
-    @NotBlank(message = "O nível de prioridade é obrigatório")
+    @NotNull(message = "O nível de prioridade é obrigatório")
     private NivelPrioridade nivelPrioridade;
 }

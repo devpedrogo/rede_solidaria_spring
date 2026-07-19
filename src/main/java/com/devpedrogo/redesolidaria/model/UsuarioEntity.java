@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.devpedrogo.redesolidaria.enums.Perfil;
@@ -69,6 +70,6 @@ public abstract class UsuarioEntity{
     )
     @Column(name = "perfil")
     @Enumerated(EnumType.STRING)
-    private Set<Perfil> perfis;
+    private Set<Perfil> perfis = new HashSet<>();
 
 }

@@ -1,12 +1,14 @@
 package com.devpedrogo.redesolidaria.service;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
+import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.model.OperadorEntity;
 import com.devpedrogo.redesolidaria.repository.IOperadorRepository;
 
@@ -36,6 +38,12 @@ public class OperadorService {
                 .senha(operadorDto.getSenha())
                 .matricula(matriculaGerada)
                 .build();
+
+        if (operador.getPerfis() == null) {
+            operador.setPerfis(new HashSet<>());
+        }
+
+        operador.getPerfis().add(Perfil.ROLE_OPERADOR);
 
         operadorRepository.save(operador);
     }

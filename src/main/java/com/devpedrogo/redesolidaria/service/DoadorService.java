@@ -1,10 +1,12 @@
 package com.devpedrogo.redesolidaria.service;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
+import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
 
@@ -30,6 +32,12 @@ public class DoadorService {
                 .telefone(doadorDto.getTelefone())
                 .endereco(doadorDto.getEndereco())
                 .build();
+
+        if (doador.getPerfis() == null) {
+            doador.setPerfis(new HashSet<>());
+        }
+
+        doador.getPerfis().add(Perfil.ROLE_DOADOR);
 
         doadorRepository.save(doador);
     }
