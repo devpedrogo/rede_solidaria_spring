@@ -32,6 +32,12 @@ public class ItemDoacaoController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    public List <ItemDoacaoEntity> listarItens() {
+        return itemDoacaoService.listarItens();
+    }
+
+    @GetMapping("/disponiveis")
+    @ResponseStatus(HttpStatus.OK)
     public List <ItemDoacaoEntity> listarItensDisponiveis() {
         return itemDoacaoService.listarItensDisponiveis();
     }

@@ -63,7 +63,11 @@ public class ItemDoacaoService {
         doacaoEfetivadaRepository.save(historico);
     }
 
-    public List <ItemDoacaoEntity> listarItensDisponiveis() {
+    public List<ItemDoacaoEntity> listarItens() {
         return itemDoacaoRepository.findAll();
+    }
+
+    public List<ItemDoacaoEntity> listarItensDisponiveis(){
+        return itemDoacaoRepository.findByStatus(StatusItem.DISPONIVEL);
     }
 }
