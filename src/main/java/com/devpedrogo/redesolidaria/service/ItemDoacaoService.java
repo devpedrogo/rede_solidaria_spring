@@ -1,7 +1,10 @@
 package com.devpedrogo.redesolidaria.service;
 
 import com.devpedrogo.redesolidaria.dto.ItemDoacaoDto;
+import com.devpedrogo.redesolidaria.dto.ItemDoacaoResponseDto;
+import com.devpedrogo.redesolidaria.dto.ItemFiltroDto;
 import com.devpedrogo.redesolidaria.model.ItemDoacaoEntity;
+import com.devpedrogo.redesolidaria.model.ItemSpecification;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.model.DoacaoEfetivadaEntity;
 import com.devpedrogo.redesolidaria.enums.StatusItem;
@@ -10,6 +13,12 @@ import com.devpedrogo.redesolidaria.repository.IDoacaoEfetivadaRepository;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -69,6 +78,25 @@ public class ItemDoacaoService {
 
     public List<ItemDoacaoEntity> listarItensDisponiveis(){
         return itemDoacaoRepository.findByStatus(StatusItem.DISPONIVEL);
+    }
+
+    public Page<ItemDoacaoResponseDto> buscarComFiltro(ItemFiltroDto filtro, Pageable pageable) {
+        Specification<ItemDoacaoEntity> spec = ItemSpecification.comFiltros(filtro);
+
+        List<String> camposPermitidos = List.of("id", "nome", "categoria", "status");
+
+        // Verifica se alguma ordenação solicitada aponta para um campo proibido/inexistente
+        boolean sortInvalido = pageable.getSort().stream()
+                .anyMatch(order -> !camposPermitidos.contains(order.getProperty()));
+
+        // Se for inválido, força a ordenação segura por ID para não quebrar o banco
+        if (sortInvalido) {
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
+        }
+        
+        // Retorna uma página de entidades filtradas dinamicamente e mapeia para DTO
+        return itemDoacaoRepository.findAll(spec, pageable)
+                .map(item -> new ItemDoacaoResponseDto(item)); 
     }
 
 }

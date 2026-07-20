@@ -9,9 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.devpedrogo.redesolidaria.dto.ItemDoacaoDto;
+import com.devpedrogo.redesolidaria.dto.ItemDoacaoResponseDto;
+import com.devpedrogo.redesolidaria.dto.ItemFiltroDto;
 import com.devpedrogo.redesolidaria.model.ItemDoacaoEntity;
 import com.devpedrogo.redesolidaria.service.ItemDoacaoService;
 
@@ -30,15 +37,24 @@ public class ItemDoacaoController {
         itemDoacaoService.receberDoacao(dto);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List <ItemDoacaoEntity> listarItens() {
-        return itemDoacaoService.listarItens();
-    }
+    // @GetMapping
+    // @ResponseStatus(HttpStatus.OK)
+    // public List <ItemDoacaoEntity> listarItens() {
+    //     return itemDoacaoService.listarItens();
+    // }
 
     @GetMapping("/disponiveis")
     @ResponseStatus(HttpStatus.OK)
     public List <ItemDoacaoEntity> listarItensDisponiveis() {
         return itemDoacaoService.listarItensDisponiveis();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ItemDoacaoResponseDto>> listarItensComFiltros(
+            @ParameterObject ItemFiltroDto filtro,
+            @ParameterObject @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+        
+        Page<ItemDoacaoResponseDto> resultado = itemDoacaoService.buscarComFiltro(filtro, pageable);
+        return ResponseEntity.ok(resultado);
     }
 }
