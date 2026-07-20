@@ -14,4 +14,6 @@ public interface IItemDoacaoRepository extends JpaRepository<ItemDoacaoEntity, I
     Optional<ItemDoacaoEntity> findByNomeIgnoreCaseAndCategoria(String nome, CategoriaItem categoria);
 
     List<ItemDoacaoEntity> findByStatus(StatusItem status);
+
+    List<ItemDoacaoEntity> findByCategoria(CategoriaItem categoria);
 }

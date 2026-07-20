@@ -70,4 +70,5 @@ public class ItemDoacaoService {
     public List<ItemDoacaoEntity> listarItensDisponiveis(){
         return itemDoacaoRepository.findByStatus(StatusItem.DISPONIVEL);
     }
+
 }
