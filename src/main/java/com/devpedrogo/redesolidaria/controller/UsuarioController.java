@@ -18,6 +18,7 @@ import com.devpedrogo.redesolidaria.service.BeneficiarioService;
 import com.devpedrogo.redesolidaria.service.DoadorService;
 import com.devpedrogo.redesolidaria.service.OperadorService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -27,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/usuarios")
 @RequiredArgsConstructor
+@Tag(name = "Usuários", description = "Endpoints para criação e gestão de usuários")
 public class UsuarioController {
     private final DoadorService doadorService;
     private final OperadorService operadorService;
@@ -57,8 +58,6 @@ public class UsuarioController {
     public List<BeneficiarioEntity> listarBeneficiarios() {
         return beneficiarioService.listarBeneficiarios();
     }
-
-
 
     @PostMapping("/operadores")
     @ResponseStatus(HttpStatus.CREATED)

@@ -20,12 +20,14 @@ import com.devpedrogo.redesolidaria.dto.ItemDoacaoResponseDto;
 import com.devpedrogo.redesolidaria.dto.ItemFiltroDto;
 import com.devpedrogo.redesolidaria.service.ItemDoacaoService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/doacaos")
+@RequestMapping("/doacoes")
 @RequiredArgsConstructor
+@Tag(name = "Doações", description = "Endpoints para criação e gestão de doações")
 public class ItemDoacaoController {
     private final ItemDoacaoService itemDoacaoService;
 
