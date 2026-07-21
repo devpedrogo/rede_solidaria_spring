@@ -105,4 +105,10 @@ public class SolicitacaoService {
     public List<SolicitacaoEntity> listarSolicitacoes(){
         return solicitacaoRepository.findAll();
     }
+
+    public SolicitacaoResponseDto buscarPorId(Integer id) {
+        return solicitacaoRepository.findById(id)
+                .map(SolicitacaoResponseDto::new)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação não encontrada com ID: " + id));
+    }
 }

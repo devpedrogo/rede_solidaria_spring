@@ -56,4 +56,10 @@ public class SolicitacaoController {
     public List<SolicitacaoEntity> listarSolicitacoes(){
         return solicitacaoService.listarSolicitacoes();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SolicitacaoResponseDto> buscarPorId(@PathVariable Integer id) {
+        SolicitacaoResponseDto dto = solicitacaoService.buscarPorId(id);
+        return ResponseEntity.ok(dto);
+    }
 }
