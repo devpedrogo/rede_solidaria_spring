@@ -69,6 +69,39 @@ public class SolicitacaoService {
         return new SolicitacaoResponseDto(salva);
     }
 
+    @Transactional
+    public SolicitacaoResponseDto alterarStatus(Integer id, StatusSolicitacao novoStatus) {
+        SolicitacaoEntity solicitacao = solicitacaoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação não encontrada com ID: " + id));
+
+        // Validação de transição repetida
+        if (solicitacao.getStatus() == novoStatus) {
+            throw new RegraDeNegocioException("A solicitação já está no status: " + novoStatus);
+        }
+
+
+        // Regra de validação ao tentar mudar o status de uma solicitação CONCLUIDA OU REJEITADA
+        if(solicitacao.getStatus().equals(StatusSolicitacao.CONCLUIDA)){
+            throw new RegraDeNegocioException("A solicitação de id [" + id + "] encontra-se CONCLUÍDA, não é possível alterar seu status.");
+        }
+
+        if(solicitacao.getStatus().equals(StatusSolicitacao.REJEITADA)){
+            throw new RegraDeNegocioException("A solicitação de id [" + id + "] foi REJEITADA, não é possível alterar seu status.");
+        }
+
+        // Regra ao CANCELAR: Devolver itens ao estoque
+        if (novoStatus == StatusSolicitacao.REJEITADA) {
+            ItemDoacaoEntity item = solicitacao.getItem();
+            item.setQuantidade(item.getQuantidade() + solicitacao.getQuantidadeSolicitada());
+            itemRepository.save(item);
+        }
+
+        solicitacao.setStatus(novoStatus);
+        solicitacaoRepository.save(solicitacao);
+
+        return new SolicitacaoResponseDto(solicitacao); 
+    }
+
     public List<SolicitacaoEntity> listarSolicitacoes(){
         return solicitacaoRepository.findAll();
     }
