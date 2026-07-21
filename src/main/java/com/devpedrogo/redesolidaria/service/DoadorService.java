@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
+import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
+import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,15 +20,16 @@ import lombok.RequiredArgsConstructor;
 public class DoadorService {
 
     private final IDoadorRepository doadorRepository;
+    private final IUsuarioRepository usuarioRepository;
 
     public void criarDoador(DoadorDto doadorDto) throws Exception {
-        DoadorEntity doador = doadorRepository.findByEmail(doadorDto.getEmail()).orElse(null);
+        UsuarioEntity usuario = usuarioRepository.findByEmail(doadorDto.getEmail()).orElse(null);
 
-        if (doador != null) {
-            throw new Exception("Usuário já cadastrado com este e-mail.");
+        if (usuario != null) {
+            throw new RegraDeNegocioException("Já existe um usuário cadastrado com este e-mail.");
         }
 
-        doador = DoadorEntity.builder()
+        DoadorEntity novoDoador = DoadorEntity.builder()
                 .nome(doadorDto.getNome())
                 .email(doadorDto.getEmail())
                 .senha(doadorDto.getSenha())
@@ -33,13 +37,13 @@ public class DoadorService {
                 .endereco(doadorDto.getEndereco())
                 .build();
 
-        if (doador.getPerfis() == null) {
-            doador.setPerfis(new HashSet<>());
+        if (novoDoador.getPerfis() == null) {
+            novoDoador.setPerfis(new HashSet<>());
         }
 
-        doador.getPerfis().add(Perfil.ROLE_DOADOR);
+        novoDoador.getPerfis().add(Perfil.ROLE_DOADOR);
 
-        doadorRepository.save(doador);
+        doadorRepository.save(novoDoador);
     }
 
     public List<DoadorEntity> listarDoadores() {

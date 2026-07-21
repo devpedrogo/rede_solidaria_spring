@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.BeneficiarioDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
+import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 import com.devpedrogo.redesolidaria.repository.IBeneficiarioRepository;
+import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,15 +19,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BeneficiarioService {
     private final IBeneficiarioRepository beneficiarioRepository;
+    private final IUsuarioRepository usuarioRepository;
 
     public void criarBeneficiario(BeneficiarioDto beneficiarioDto) throws Exception {
-        BeneficiarioEntity beneficiario = beneficiarioRepository.findByEmail(beneficiarioDto.getEmail()).orElse(null);
+        UsuarioEntity usuario = usuarioRepository.findByEmail(beneficiarioDto.getEmail()).orElse(null);
         
-        if (beneficiario != null) {
-            throw new Exception("Já existe um beneficiário cadastrado com este e-mail.");
+        if (usuario != null) {
+            throw new RegraDeNegocioException("Já existe um usuário cadastrado com este e-mail.");
         }
 
-        beneficiario = BeneficiarioEntity.builder()
+        BeneficiarioEntity novoBeneficiario = BeneficiarioEntity.builder()
                 .nome(beneficiarioDto.getNome())
                 .telefone(beneficiarioDto.getTelefone())
                 .email(beneficiarioDto.getEmail())
@@ -34,13 +38,13 @@ public class BeneficiarioService {
                 .nivelPrioridade(beneficiarioDto.getNivelPrioridade())
                 .build();
 
-        if (beneficiario.getPerfis() == null) {
-            beneficiario.setPerfis(new HashSet<>());
+        if (novoBeneficiario.getPerfis() == null) {
+            novoBeneficiario.setPerfis(new HashSet<>());
         }
 
-        beneficiario.getPerfis().add(Perfil.ROLE_BENEFICIARIO);
+        novoBeneficiario.getPerfis().add(Perfil.ROLE_BENEFICIARIO);
 
-        beneficiarioRepository.save(beneficiario);
+        beneficiarioRepository.save(novoBeneficiario);
     }
 
     public List<BeneficiarioEntity> listarBeneficiarios() {
