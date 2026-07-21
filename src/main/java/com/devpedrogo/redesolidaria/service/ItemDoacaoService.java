@@ -72,14 +72,6 @@ public class ItemDoacaoService {
         doacaoEfetivadaRepository.save(historico);
     }
 
-    public List<ItemDoacaoEntity> listarItens() {
-        return itemDoacaoRepository.findAll();
-    }
-
-    public List<ItemDoacaoEntity> listarItensDisponiveis(){
-        return itemDoacaoRepository.findByStatus(StatusItem.DISPONIVEL);
-    }
-
     public Page<ItemDoacaoResponseDto> buscarComFiltro(ItemFiltroDto filtro, Pageable pageable) {
         Specification<ItemDoacaoEntity> spec = ItemSpecification.comFiltros(filtro);
 

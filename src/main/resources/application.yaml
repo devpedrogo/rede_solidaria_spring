@@ -1,30 +1,30 @@
 spring:
   application:
     name: redesolidaria
-  # datasource:
-  #   #jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:5432/postgres
-  #   url: ${DB_URL}
-  #   username: ${DB_USERNAME}
-  #   password: ${DB_PASSWORD}
-  #   driver-class-name: org.postgresql.Driver
-  # jpa:
-  #   database-platform: org.hibernate.dialect.PostgreSQLDialect
-  #   show-sql: true
-  #   hibernate:
-  #     ddl-auto: update
-  #   properties:
-  #     "[hibernate.format_sql]": true
   datasource:
-    # Cria o arquivo dados.db localmente na raiz do projeto
-    url: jdbc:sqlite:dados.db
-    driver-class-name: org.sqlite.JDBC
-    username: sa
-    password: 
+    #jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:5432/postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
   jpa:
-    # Define o dialeto correto para o SQLite interpretar os comandos do Hibernate
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
     hibernate:
       ddl-auto: update
-    show-sql: true
     properties:
       "[hibernate.format_sql]": true
+  # datasource:
+  #   # Cria o arquivo dados.db localmente na raiz do projeto
+  #   url: jdbc:sqlite:dados.db
+  #   driver-class-name: org.sqlite.JDBC
+  #   username: sa
+  #   password: 
+  # jpa:
+  #   # Define o dialeto correto para o SQLite interpretar os comandos do Hibernate
+  #   database-platform: org.hibernate.community.dialect.SQLiteDialect
+  #   hibernate:
+  #     ddl-auto: update
+  #   show-sql: true
+  #   properties:
+  #     "[hibernate.format_sql]": true
