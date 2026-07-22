@@ -8,6 +8,7 @@ import com.devpedrogo.redesolidaria.model.ItemSpecification;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.model.DoacaoEfetivadaEntity;
 import com.devpedrogo.redesolidaria.enums.StatusItem;
+import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.repository.IItemDoacaoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -41,7 +42,7 @@ public class ItemDoacaoService {
         // 1. Busca o doador no banco pelo ID enviado no DTO
         // Lança uma exceção personalizada caso o ID não exista (tratamento de erro de mercado)
         DoadorEntity doador = doadorRepository.findById(dto.getDoadorId())
-                .orElseThrow(() -> new IllegalArgumentException("Doador não encontrado com o ID: " + dto.getDoadorId()));
+                .orElseThrow(() -> new RegraDeNegocioException("Doador não encontrado com o ID: " + dto.getDoadorId()));
         
         // 2. Busca ou inicializa o item no Estoque Global
         ItemDoacaoEntity estoque = itemDoacaoRepository
