@@ -34,3 +34,7 @@ spring:
     show-sql: true
     properties:
       "[hibernate.format_sql]": true
+
+jwt:
+  expiration: ${JWT_EXPIRATION:86400000} #24 horas
+  key: ${JWT_KEY:p!YKo=abwNKvsRQsh7q-V-mXTIqvPY8RH5r_Xw&L$k41xDM2cuVK7D41AvTUEO4qB8&lRJ7GS3v7X#0tkWV0-hrEuI7K=dUWS6-L_hoJ0PCI!LAW$Yc45=kY-jocd4ERN=T!FCc_uLyuaP2wbCGnRjpMqdWYYcEooVQpr3rvJ8Uf!m2z7g!5Xb3oydkNkS0m#&Wjoo4SxZrGVhlAF3uLPoJQ$-WTEooJ#i_Yt9aGHcudnJs79!1$jHvdrJzQJvA&$dyzzrkPr_X=IBaH#C5y9bFw1f9&E4BRDU$7Tht8VVBC4ccbmr!SQMRB87iS&u0B_z9==Y7lpEKV25a!ECJ3PnPW}

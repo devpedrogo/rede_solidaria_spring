@@ -9,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 
@@ -37,7 +39,7 @@ import jakarta.persistence.Table;
 @Table(name = "usuarios")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
-public abstract class UsuarioEntity{
+public abstract class UsuarioEntity implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
