@@ -106,8 +106,11 @@ public class SolicitacaoService {
         return new SolicitacaoResponseDto(solicitacao); 
     }
 
-    public List<SolicitacaoEntity> listarSolicitacoes(){
-        return solicitacaoRepository.findAll();
+    public List<SolicitacaoResponseDto> listarSolicitacoes() {
+        return solicitacaoRepository.findAll()
+                .stream()
+                .map(SolicitacaoResponseDto::new) // ou entity -> new SolicitacaoResponseDto(entity)
+                .toList();
     }
 
     public SolicitacaoResponseDto buscarPorId(Integer id) {

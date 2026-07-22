@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.devpedrogo.redesolidaria.dto.AtualizarStatusSolicitacaoDto;
 import com.devpedrogo.redesolidaria.dto.SolicitacaoCreateDto;
 import com.devpedrogo.redesolidaria.dto.SolicitacaoResponseDto;
-import com.devpedrogo.redesolidaria.model.SolicitacaoEntity;
 import com.devpedrogo.redesolidaria.service.SolicitacaoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,7 +52,7 @@ public class SolicitacaoController {
     }
 
     @GetMapping
-    public List<SolicitacaoEntity> listarSolicitacoes(){
+    public List<SolicitacaoResponseDto> listarSolicitacoes(){
         return solicitacaoService.listarSolicitacoes();
     }
 
