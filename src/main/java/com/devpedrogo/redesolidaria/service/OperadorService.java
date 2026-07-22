@@ -8,6 +8,7 @@ import java.util.Random;
 import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
+import com.devpedrogo.redesolidaria.dto.OperadorResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.OperadorEntity;
@@ -15,6 +16,7 @@ import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 import com.devpedrogo.redesolidaria.repository.IOperadorRepository;
 import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -54,5 +56,11 @@ public class OperadorService {
 
     public List<OperadorEntity> listarOperadores() {
         return operadorRepository.findAll();
+    }
+
+    public OperadorResponseDto listarPorId(Integer id){
+        return operadorRepository.findById(id)
+                    .map(entity -> new OperadorResponseDto(entity))
+                    .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,5 +43,11 @@ public class ItemDoacaoController {
         
         Page<ItemDoacaoResponseDto> resultado = itemDoacaoService.buscarComFiltro(filtro, pageable);
         return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDoacaoResponseDto> listarPorId(Integer id){
+        ItemDoacaoResponseDto doacao = itemDoacaoService.listarPorId(id);
+        return ResponseEntity.ok(doacao);
     }
 }

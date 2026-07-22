@@ -9,6 +9,9 @@ import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.model.DoacaoEfetivadaEntity;
 import com.devpedrogo.redesolidaria.enums.StatusItem;
 import com.devpedrogo.redesolidaria.repository.IItemDoacaoRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import com.devpedrogo.redesolidaria.repository.IDoacaoEfetivadaRepository;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
 
@@ -90,5 +93,11 @@ public class ItemDoacaoService {
         return itemDoacaoRepository.findAll(spec, pageable)
                 .map(item -> new ItemDoacaoResponseDto(item)); 
     }
+
+    public ItemDoacaoResponseDto listarPorId(Integer id){
+        return itemDoacaoRepository.findById(id)
+                    .map(entity -> new ItemDoacaoResponseDto(entity))
+                    .orElseThrow(() -> new EntityNotFoundException("Item com id [" + id + "] não encontrado"));
+        }
 
 }

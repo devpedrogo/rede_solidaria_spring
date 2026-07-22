@@ -79,7 +79,6 @@ public class SolicitacaoService {
             throw new RegraDeNegocioException("A solicitação já está no status: " + novoStatus);
         }
 
-
         // Regra de validação ao tentar mudar o status de uma solicitação CONCLUIDA OU REJEITADA
         if(solicitacao.getStatus().equals(StatusSolicitacao.CONCLUIDA)){
             throw new RegraDeNegocioException("A solicitação de id [" + id + "] encontra-se CONCLUÍDA, não é possível alterar seu status.");
@@ -96,6 +95,11 @@ public class SolicitacaoService {
             itemRepository.save(item);
         }
 
+        // Regra ao CONCLUIR uma solicitacão e o item no estoque zerar
+        if (novoStatus == StatusSolicitacao.CONCLUIDA && solicitacao.getItem().getQuantidade().equals(0)) {
+            solicitacao.getItem().setStatus(StatusItem.ESGOTADO);
+        }
+
         solicitacao.setStatus(novoStatus);
         solicitacaoRepository.save(solicitacao);
 
@@ -108,7 +112,7 @@ public class SolicitacaoService {
 
     public SolicitacaoResponseDto buscarPorId(Integer id) {
         return solicitacaoRepository.findById(id)
-                .map(SolicitacaoResponseDto::new)
+                .map(entity -> new SolicitacaoResponseDto(entity))
                 .orElseThrow(() -> new EntityNotFoundException("Solicitação não encontrada com ID: " + id));
     }
 }

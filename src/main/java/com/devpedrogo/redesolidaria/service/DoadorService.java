@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
+import com.devpedrogo.redesolidaria.dto.DoadorResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
@@ -13,6 +14,7 @@ import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
 import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -48,5 +50,11 @@ public class DoadorService {
 
     public List<DoadorEntity> listarDoadores() {
         return doadorRepository.findAll();
+    }
+
+    public DoadorResponseDto listarPorId(Integer id){
+        return doadorRepository.findById(id)
+                    .map(entity -> new DoadorResponseDto(entity))
+                    .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
     }
 }
