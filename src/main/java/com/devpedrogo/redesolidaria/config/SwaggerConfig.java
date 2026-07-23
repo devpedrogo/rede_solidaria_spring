@@ -2,6 +2,7 @@ package com.devpedrogo.redesolidaria.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -28,7 +29,10 @@ public class SwaggerConfig {
                 .info(new Info()
                     .title("Rede Solidaria API")
                     .version("1.0.0")
-                    .description("Sistema de gerenciamento de uma rede de doações."))
+                    .description("API REST para gestão de doações, solicitações e usuários da Rede Solidária.")
+                    .contact(new Contact()
+                        .name("Equipe Rede Solidária")
+                        .email("contato@redesolidaria.com")))
                 // Aplica a necessidade de autenticação globalmente no Swagger
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
@@ -38,7 +42,8 @@ public class SwaggerConfig {
                                         .name(securitySchemeName)
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
-                                        .bearerFormat("JWT")));
+                                        .bearerFormat("JWT")
+                                        .description("Insira o token JWT gerado no endpoint de login para autenticar as requisições.")));
     }
 
     @Bean

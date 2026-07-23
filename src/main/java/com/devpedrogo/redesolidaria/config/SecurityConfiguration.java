@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.AllArgsConstructor;
@@ -36,9 +35,29 @@ public class SecurityConfiguration {
                 .csrf(c -> c.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex
-                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                    // Trata o 401 (Não autenticado / Token inválido ou ausente)
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        response.setContentType("application/json");
+                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                        response.getWriter().write("""
+                            {
+                                "status": 401,
+                                "error": "Unauthorized",
+                                "message": "Token ausente, invalido ou expirado."
+                            }
+                        """);
+                    })
+                    // Trata o 403 (Autenticado, mas sem permissão de acesso/perfil)
                     .accessDeniedHandler((request, response, accessDeniedException) -> {
+                        response.setContentType("application/json");
                         response.setStatus(HttpStatus.FORBIDDEN.value());
+                        response.getWriter().write("""
+                            {
+                                "status": 403,
+                                "error": "Forbidden",
+                                "message": "Você não tem permissão para acessar este recurso."
+                            }
+                        """);
                     })
                 )
                 .authorizeHttpRequests(auth -> auth

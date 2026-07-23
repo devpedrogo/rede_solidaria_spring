@@ -51,7 +51,7 @@ public class SolicitacaoService {
         // 4. Abater estoque / atualizar status do item
         item.setQuantidade(item.getQuantidade() - dto.quantidadeSolicitada());
         if (item.getQuantidade() == 0) {
-            item.setStatus(StatusItem.RESERVADO); // Ou INDISPONIVEL, dependendo do seu Enum
+            item.setStatus(StatusItem.RESERVADO);
         }
         itemRepository.save(item);
 
