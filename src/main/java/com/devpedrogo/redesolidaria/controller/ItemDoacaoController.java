@@ -20,6 +20,7 @@ import com.devpedrogo.redesolidaria.dto.ItemDoacaoResponseDto;
 import com.devpedrogo.redesolidaria.dto.ItemFiltroDto;
 import com.devpedrogo.redesolidaria.service.ItemDoacaoService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,20 @@ public class ItemDoacaoController {
     private final ItemDoacaoService itemDoacaoService;
 
     @PostMapping
+    @Operation(
+        summary = "Cadastrar nova doação", 
+        description = "Cadastra uma nova doação no sistema."
+    )
     @ResponseStatus(HttpStatus.CREATED)
     public void criarItemDoacao(@Valid @RequestBody ItemDoacaoDto dto) {
         itemDoacaoService.receberDoacao(dto);
     }
 
     @GetMapping
+    @Operation(
+        summary = "Listar itens doados com filtro", 
+        description = "Lista itens cadastrados no sistema a partir de um filtro passado."
+    )
     public ResponseEntity<Page<ItemDoacaoResponseDto>> listarItensComFiltros(
             @ParameterObject ItemFiltroDto filtro,
             @ParameterObject @PageableDefault(size = 10, sort = "id") Pageable pageable) {
@@ -47,6 +56,10 @@ public class ItemDoacaoController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+        summary = "Listar doações por ID", 
+        description = "Lista as doações cadastradas no sistema por ID."
+    )
     public ResponseEntity<ItemDoacaoResponseDto> listarPorId(@PathVariable Integer id){
         ItemDoacaoResponseDto doacao = itemDoacaoService.listarPorId(id);
         return ResponseEntity.ok(doacao);
