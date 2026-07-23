@@ -14,7 +14,6 @@ import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.dto.DoadorResponseDto;
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
 import com.devpedrogo.redesolidaria.dto.OperadorResponseDto;
-import com.devpedrogo.redesolidaria.model.OperadorEntity;
 import com.devpedrogo.redesolidaria.service.BeneficiarioService;
 import com.devpedrogo.redesolidaria.service.DoadorService;
 import com.devpedrogo.redesolidaria.service.OperadorService;
@@ -114,7 +113,7 @@ public class UsuarioController {
         description = "Lista todos os operadores cadastrados no sistema."
     )
     @ResponseStatus(HttpStatus.OK)
-    public List<OperadorEntity> listarOperadores() {
+    public List<OperadorResponseDto> listarOperadores() {
         return operadorService.listarOperadores();
     }
 

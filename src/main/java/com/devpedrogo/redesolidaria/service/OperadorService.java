@@ -57,8 +57,11 @@ public class OperadorService {
         operadorRepository.save(novoOperador);
     }
 
-    public List<OperadorEntity> listarOperadores() {
-        return operadorRepository.findAll();
+    public List<OperadorResponseDto> listarOperadores() {
+        return operadorRepository.findAll()
+                .stream()
+                .map(OperadorResponseDto::new) // ou entity -> new OperadorResponseDto(entity)
+                .toList();
     }
 
     public OperadorResponseDto listarPorId(Integer id){
