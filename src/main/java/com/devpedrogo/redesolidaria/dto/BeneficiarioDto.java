@@ -3,7 +3,6 @@ package com.devpedrogo.redesolidaria.dto;
 import com.devpedrogo.redesolidaria.enums.NivelPrioridade;
 import com.devpedrogo.redesolidaria.enums.TipoBeneficiario;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,21 +17,21 @@ public class BeneficiarioDto {
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
     private String nome;
 
-    @NotBlank(message = "O telefone é obrigatório")
+    // @NotBlank(message = "O telefone é obrigatório")
     @Size(max = 20, message = "O telefone não pode passar de 20 caracteres")
     private String telefone;
 
-    @NotBlank(message = "O e-mail é obrigatório")
-    @Email(message = "Insira um e-mail com formato válido")
-    @Size(max = 100, message = "O e-mail não pode passar de 100 caracteres")
-    private String email;
+    // @NotBlank(message = "O e-mail é obrigatório")
+    // @Email(message = "Insira um e-mail com formato válido")
+    // @Size(max = 100, message = "O e-mail não pode passar de 100 caracteres")
+    // private String email;
 
-    @NotBlank(message = "O endereço é obrigatório")
+    // @NotBlank(message = "O endereço é obrigatório")
     private String endereco;
 
-    @NotBlank(message = "A senha é obrigatória")
-    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
-    private String senha;
+    // @NotBlank(message = "A senha é obrigatória")
+    // @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
+    // private String senha;
 
     @NotNull(message = "O tipo de beneficiário é obrigatório")
     private TipoBeneficiario tipoBeneficiario;

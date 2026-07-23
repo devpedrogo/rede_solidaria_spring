@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioDto;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
-import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
-import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 import com.devpedrogo.redesolidaria.repository.IBeneficiarioRepository;
-import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,21 +18,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BeneficiarioService {
     private final IBeneficiarioRepository beneficiarioRepository;
-    private final IUsuarioRepository usuarioRepository;
 
     public void criarBeneficiario(BeneficiarioDto beneficiarioDto) throws Exception {
-        UsuarioEntity usuario = usuarioRepository.findByEmail(beneficiarioDto.getEmail()).orElse(null);
+        // UsuarioEntity usuario = usuarioRepository.findByEmail(beneficiarioDto.getEmail()).orElse(null);
         
-        if (usuario != null) {
-            throw new RegraDeNegocioException("Já existe um usuário cadastrado com este e-mail.");
-        }
+        // if (usuario != null) {
+        //     throw new RegraDeNegocioException("Já existe um usuário cadastrado com este e-mail.");
+        // }
 
         BeneficiarioEntity novoBeneficiario = BeneficiarioEntity.builder()
                 .nome(beneficiarioDto.getNome())
                 .telefone(beneficiarioDto.getTelefone())
-                .email(beneficiarioDto.getEmail())
                 .endereco(beneficiarioDto.getEndereco())
-                .senha(beneficiarioDto.getSenha())
                 .tipoBeneficiario(beneficiarioDto.getTipoBeneficiario())
                 .nivelPrioridade(beneficiarioDto.getNivelPrioridade())
                 .build();
@@ -49,8 +43,11 @@ public class BeneficiarioService {
         beneficiarioRepository.save(novoBeneficiario);
     }
 
-    public List<BeneficiarioEntity> listarBeneficiarios() {
-        return beneficiarioRepository.findAll();
+    public List<BeneficiarioResponseDto> listarBeneficiarios() {
+        return beneficiarioRepository.findAll()
+                .stream()
+                .map(BeneficiarioResponseDto::new) // ou entity -> new BeneficiarioResponseDto(entity)
+                .toList();
     }
 
     public BeneficiarioResponseDto listarPorId(Integer id){

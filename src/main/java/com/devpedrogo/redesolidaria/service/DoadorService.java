@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.dto.DoadorResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
-import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
-import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
-import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +19,16 @@ import lombok.RequiredArgsConstructor;
 public class DoadorService {
 
     private final IDoadorRepository doadorRepository;
-    private final IUsuarioRepository usuarioRepository;
 
     public void criarDoador(DoadorDto doadorDto) throws Exception {
-        UsuarioEntity usuario = usuarioRepository.findByEmail(doadorDto.getEmail()).orElse(null);
+        // UsuarioEntity usuario = usuarioRepository.findByEmail(doadorDto.getEmail()).orElse(null);
 
-        if (usuario != null) {
-            throw new RegraDeNegocioException("Já existe um usuário cadastrado com este e-mail.");
-        }
+        // if (usuario != null) {
+        //     throw new RegraDeNegocioException("Já existe um usuário cadastrado com este e-mail.");
+        // }
 
         DoadorEntity novoDoador = DoadorEntity.builder()
                 .nome(doadorDto.getNome())
-                .email(doadorDto.getEmail())
-                .senha(doadorDto.getSenha())
                 .telefone(doadorDto.getTelefone())
                 .endereco(doadorDto.getEndereco())
                 .build();
@@ -48,8 +42,11 @@ public class DoadorService {
         doadorRepository.save(novoDoador);
     }
 
-    public List<DoadorEntity> listarDoadores() {
-        return doadorRepository.findAll();
+    public List<DoadorResponseDto> listarDoadores() {
+        return doadorRepository.findAll()
+                .stream()
+                .map(DoadorResponseDto::new) // ou entity -> new DoadorResponseDto(entity)
+                .toList();
     }
 
     public DoadorResponseDto listarPorId(Integer id){

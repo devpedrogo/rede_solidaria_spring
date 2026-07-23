@@ -14,8 +14,6 @@ import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.dto.DoadorResponseDto;
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
 import com.devpedrogo.redesolidaria.dto.OperadorResponseDto;
-import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
-import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.model.OperadorEntity;
 import com.devpedrogo.redesolidaria.service.BeneficiarioService;
 import com.devpedrogo.redesolidaria.service.DoadorService;
@@ -56,7 +54,7 @@ public class UsuarioController {
         description = "Lista todos os doadores cadastrados no sistema."
     )
     @ResponseStatus(HttpStatus.OK)
-    public List<DoadorEntity> listarDoadores() {
+    public List<DoadorResponseDto> listarDoadores() {
         return doadorService.listarDoadores();
     }
 
@@ -86,7 +84,7 @@ public class UsuarioController {
         description = "Lista todos os beneficiários cadastrados no sistema."
     )
     @ResponseStatus(HttpStatus.OK)
-    public List<BeneficiarioEntity> listarBeneficiarios() {
+    public List<BeneficiarioResponseDto> listarBeneficiarios() {
         return beneficiarioService.listarBeneficiarios();
     }
 

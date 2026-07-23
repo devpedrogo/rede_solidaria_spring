@@ -50,16 +50,16 @@ public abstract class UsuarioEntity implements UserDetails{
     @Column(nullable = false, length = 100)
     private String nome;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = true, length = 20)
     private String telefone;
 
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = true, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String endereco;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String senha;
 
     @Builder.Default

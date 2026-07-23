@@ -6,7 +6,6 @@ import com.devpedrogo.redesolidaria.model.DoadorEntity;
 public record DoadorResponseDto(
     Integer id,
     String nome,
-    String email,
     String telefone
 ) {
     // Construtor auxiliar para facilitar a conversao no Service
@@ -14,7 +13,6 @@ public record DoadorResponseDto(
         this(
             entity.getId(),
             entity.getNome(),
-            entity.getEmail(),
             entity.getTelefone()
         );
     }

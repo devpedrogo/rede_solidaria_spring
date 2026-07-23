@@ -8,7 +8,6 @@ import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
 public record BeneficiarioResponseDto(
     Integer id,
     String nome,
-    String email,
     String telefone,
     TipoBeneficiario tipoBeneficiario,
     NivelPrioridade nivelPrioridade
@@ -18,7 +17,6 @@ public record BeneficiarioResponseDto(
         this(
             entity.getId(),
             entity.getNome(),
-            entity.getEmail(),
             entity.getTelefone(),
             entity.getTipoBeneficiario(),
             entity.getNivelPrioridade()
