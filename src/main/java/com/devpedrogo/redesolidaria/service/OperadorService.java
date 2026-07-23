@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
@@ -24,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class OperadorService {
     private final IOperadorRepository operadorRepository;
     private final IUsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+
     
     public void cadastrarOperador(OperadorDto operadorDto) throws Exception {
         UsuarioEntity usuario = usuarioRepository.findByEmail(operadorDto.getEmail()).orElse(null);
@@ -41,7 +44,7 @@ public class OperadorService {
                 .telefone(operadorDto.getTelefone())
                 .email(operadorDto.getEmail())
                 .endereco(operadorDto.getEndereco())
-                .senha(operadorDto.getSenha())
+                .senha(passwordEncoder.encode(operadorDto.getSenha()))
                 .matricula(matriculaGerada)
                 .build();
 
