@@ -55,7 +55,7 @@ public class SecurityConfiguration {
                             {
                                 "status": 403,
                                 "error": "Forbidden",
-                                "message": "Você não tem permissão para acessar este recurso."
+                                "message": "Voce nao tem permissao para acessar este recurso."
                             }
                         """);
                     })
@@ -64,7 +64,8 @@ public class SecurityConfiguration {
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         // Apenas o LOGIN é público
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/operadores").hasRole("ADMIN")
+                        .anyRequest().hasAnyRole("ADMIN", "OPERADOR")
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
