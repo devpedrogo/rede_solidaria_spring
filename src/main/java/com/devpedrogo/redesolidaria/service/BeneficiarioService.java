@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioDto;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
 import com.devpedrogo.redesolidaria.repository.IBeneficiarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -54,5 +56,21 @@ public class BeneficiarioService {
         return beneficiarioRepository.findById(id)
                     .map(entity -> new BeneficiarioResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
+    }
+
+    @Transactional
+    public BeneficiarioResponseDto atualizarBeneficiario(Integer id, BeneficiarioDto beneficiarioDto){
+        BeneficiarioEntity beneficiario = beneficiarioRepository.findById(id)
+                    .orElseThrow(() -> new RegraDeNegocioException("Beneficiario com id [" + id + "] não encontrado!"));
+
+        beneficiario.setNome(beneficiarioDto.getNome());
+        beneficiario.setTelefone(beneficiarioDto.getTelefone());
+        beneficiario.setEndereco(beneficiarioDto.getEndereco());
+        beneficiario.setTipoBeneficiario(beneficiarioDto.getTipoBeneficiario());
+        beneficiario.setNivelPrioridade(beneficiarioDto.getNivelPrioridade());
+
+        BeneficiarioEntity beneficiarioAtualizado = beneficiarioRepository.save(beneficiario);
+
+        return new BeneficiarioResponseDto(beneficiarioAtualizado);
     }
 }

@@ -9,6 +9,7 @@ public record BeneficiarioResponseDto(
     Integer id,
     String nome,
     String telefone,
+    String endereco,
     TipoBeneficiario tipoBeneficiario,
     NivelPrioridade nivelPrioridade
 ) {
@@ -18,6 +19,7 @@ public record BeneficiarioResponseDto(
             entity.getId(),
             entity.getNome(),
             entity.getTelefone(),
+            entity.getEndereco(),
             entity.getTipoBeneficiario(),
             entity.getNivelPrioridade()
         );

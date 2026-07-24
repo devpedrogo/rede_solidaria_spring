@@ -64,7 +64,7 @@ public class SecurityConfiguration {
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         // Apenas o LOGIN é público
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/operadores").hasRole("ADMIN")
+                        .requestMatchers("/operadores/**").hasRole("ADMIN")
                         .requestMatchers("/admins/**").hasRole("ADMIN")
                         .anyRequest().hasAnyRole("ADMIN", "OPERADOR")
                 )
