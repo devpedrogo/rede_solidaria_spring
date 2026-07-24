@@ -22,7 +22,7 @@ public class DoadorService {
 
     private final IDoadorRepository doadorRepository;
 
-    public void criarDoador(DoadorDto doadorDto) throws Exception {
+    public DoadorResponseDto criarDoador(DoadorDto doadorDto) throws Exception {
         // UsuarioEntity usuario = usuarioRepository.findByEmail(doadorDto.getEmail()).orElse(null);
 
         // if (usuario != null) {
@@ -41,7 +41,7 @@ public class DoadorService {
 
         novoDoador.getPerfis().add(Perfil.ROLE_DOADOR);
 
-        doadorRepository.save(novoDoador);
+        return new DoadorResponseDto(doadorRepository.save(novoDoador));
     }
 
     public List<DoadorResponseDto> listarDoadores() {

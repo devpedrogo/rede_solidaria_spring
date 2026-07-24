@@ -36,8 +36,8 @@ public class BeneficiarioController {
         description = "Cadastra um novo beneficiário no sistema."
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public void cadastrarBeneficiario(@Valid @RequestBody BeneficiarioDto beneficiarioDto) throws Exception {
-        beneficiarioService.criarBeneficiario(beneficiarioDto);
+    public BeneficiarioResponseDto cadastrarBeneficiario(@Valid @RequestBody BeneficiarioDto beneficiarioDto) throws Exception {
+        return beneficiarioService.criarBeneficiario(beneficiarioDto);
     }
 
     @PutMapping("/{id}")

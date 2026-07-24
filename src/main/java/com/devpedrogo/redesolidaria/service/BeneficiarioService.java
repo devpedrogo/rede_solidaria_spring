@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class BeneficiarioService {
     private final IBeneficiarioRepository beneficiarioRepository;
 
-    public void criarBeneficiario(BeneficiarioDto beneficiarioDto) throws Exception {
+    public BeneficiarioResponseDto criarBeneficiario(BeneficiarioDto beneficiarioDto) throws Exception {
         // UsuarioEntity usuario = usuarioRepository.findByEmail(beneficiarioDto.getEmail()).orElse(null);
         
         // if (usuario != null) {
@@ -42,7 +42,7 @@ public class BeneficiarioService {
 
         novoBeneficiario.getPerfis().add(Perfil.ROLE_BENEFICIARIO);
 
-        beneficiarioRepository.save(novoBeneficiario);
+        return new BeneficiarioResponseDto(beneficiarioRepository.save(novoBeneficiario));
     }
 
     public List<BeneficiarioResponseDto> listarBeneficiarios() {

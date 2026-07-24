@@ -36,8 +36,8 @@ public class DoadorController {
         description = "Cadastra um novo doador no sistema."
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public void cadastrarDoador(@Valid @RequestBody DoadorDto doadorDto) throws Exception {
-        doadorService.criarDoador(doadorDto);
+    public DoadorResponseDto cadastrarDoador(@Valid @RequestBody DoadorDto doadorDto) throws Exception {
+        return doadorService.criarDoador(doadorDto);
     }
 
     @PutMapping("/{id}")

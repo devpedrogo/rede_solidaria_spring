@@ -29,7 +29,7 @@ public class OperadorService {
     private final PasswordEncoder passwordEncoder;
 
     
-    public void cadastrarOperador(OperadorDto operadorDto) throws Exception {
+    public OperadorResponseDto cadastrarOperador(OperadorDto operadorDto) throws Exception {
         UsuarioEntity usuario = usuarioRepository.findByEmail(operadorDto.getEmail()).orElse(null);
 
         if (usuario != null) {
@@ -55,7 +55,7 @@ public class OperadorService {
 
         novoOperador.getPerfis().add(Perfil.ROLE_OPERADOR);
 
-        operadorRepository.save(novoOperador);
+        return new OperadorResponseDto(operadorRepository.save(novoOperador));
     }
 
     public List<OperadorResponseDto> listarOperadores() {

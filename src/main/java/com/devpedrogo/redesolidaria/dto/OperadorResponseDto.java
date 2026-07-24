@@ -8,6 +8,7 @@ public record OperadorResponseDto(
     String nome,
     String email,
     String telefone,
+    String endereco,
     String matricula
 ) {
     // Construtor auxiliar para facilitar a conversao no Service
@@ -17,6 +18,7 @@ public record OperadorResponseDto(
             entity.getNome(),
             entity.getEmail(),
             entity.getTelefone(),
+            entity.getEndereco(),
             entity.getMatricula()
         );
     }
