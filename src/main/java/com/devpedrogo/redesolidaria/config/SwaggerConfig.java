@@ -7,12 +7,15 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
+import java.util.HashSet;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.model.AdminEntity;
 import com.devpedrogo.redesolidaria.repository.IAdminRepository;
 import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
@@ -57,6 +60,12 @@ public class SwaggerConfig {
                         .endereco("Rua Das Flores, 445")
                         .telefone("89 98777-8888")
                         .build();
+
+                        if (admin.getPerfis() == null) {
+                            admin.setPerfis(new HashSet<>());
+                        }
+
+                        admin.getPerfis().add(Perfil.ROLE_ADMIN);
 
                 adminRepository.save(admin);
                 System.out.println("✅ Usuário Admin inicial criado com sucesso via Spring!");

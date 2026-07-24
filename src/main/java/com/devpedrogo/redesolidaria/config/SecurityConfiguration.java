@@ -65,6 +65,7 @@ public class SecurityConfiguration {
                         // Apenas o LOGIN é público
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/operadores").hasRole("ADMIN")
+                        .requestMatchers("/admins/**").hasRole("ADMIN")
                         .anyRequest().hasAnyRole("ADMIN", "OPERADOR")
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

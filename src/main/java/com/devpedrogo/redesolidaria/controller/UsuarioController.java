@@ -8,12 +8,15 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.devpedrogo.redesolidaria.dto.AdminDto;
+import com.devpedrogo.redesolidaria.dto.AdminResponseDto;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioDto;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioResponseDto;
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.dto.DoadorResponseDto;
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
 import com.devpedrogo.redesolidaria.dto.OperadorResponseDto;
+import com.devpedrogo.redesolidaria.service.AdminService;
 import com.devpedrogo.redesolidaria.service.BeneficiarioService;
 import com.devpedrogo.redesolidaria.service.DoadorService;
 import com.devpedrogo.redesolidaria.service.OperadorService;
@@ -36,6 +39,7 @@ public class UsuarioController {
     private final DoadorService doadorService;
     private final OperadorService operadorService;
     private final BeneficiarioService beneficiarioService;
+    private final AdminService adminService;
 
     @PostMapping("/doadores")
     @Operation(
@@ -125,5 +129,35 @@ public class UsuarioController {
     public ResponseEntity<OperadorResponseDto> listarOpPorId(@PathVariable Integer id) {
         OperadorResponseDto operador = operadorService.listarPorId(id);
         return ResponseEntity.ok(operador);
+    }
+
+    @PostMapping("/admins")
+    @Operation(
+        summary = "Cadastrar novo admin", 
+        description = "Cadastra um novo administrador no sistema."
+    )
+    @ResponseStatus(HttpStatus.CREATED)
+    public AdminResponseDto cadastrarAdmin(AdminDto adminDto){
+        return adminService.cadastrarAdmin(adminDto);
+    }
+
+    @GetMapping("/admins")
+    @Operation(
+        summary = "Listar administradores", 
+        description = "Lista todos os administradores cadastrados no sistema."
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public List<AdminResponseDto> listarAdmins() {
+        return adminService.listarAdmins();
+    }
+
+    @GetMapping("/admins/{id}")
+    @Operation(
+        summary = "Listar administradores por ID", 
+        description = "Lista os operadores cadastrados no sistema por ID."
+    )
+    public ResponseEntity<AdminResponseDto> listarAdmPorId(@PathVariable Integer id) {
+        AdminResponseDto admin = adminService.listarPorId(id);
+        return ResponseEntity.ok(admin);
     }
 }
