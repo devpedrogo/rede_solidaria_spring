@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.dto.DoadorResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -53,5 +55,19 @@ public class DoadorService {
         return doadorRepository.findById(id)
                     .map(entity -> new DoadorResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
+    }
+
+    @Transactional
+    public DoadorResponseDto atualizarDoador(Integer id, DoadorDto doadorDto){
+        DoadorEntity doador = doadorRepository.findById(id)
+                    .orElseThrow(() -> new RegraDeNegocioException("Doador com id [" + id + "] não encontrado!"));
+
+        doador.setNome(doadorDto.getNome());
+        doador.setTelefone(doadorDto.getTelefone());
+        doador.setEndereco(doadorDto.getEndereco());
+        
+        DoadorEntity doadorAtualizado = doadorRepository.save(doador);
+
+        return new DoadorResponseDto(doadorAtualizado);
     }
 }

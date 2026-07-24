@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -37,6 +38,16 @@ public class OperadorController {
     @ResponseStatus(HttpStatus.CREATED)
     public void cadastrarOperador(@Valid @RequestBody OperadorDto operadorDto) throws Exception {
         operadorService.cadastrarOperador(operadorDto);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Atualizar operador por ID", 
+        description = "Atualiza um operador no sistema a partir de um ID e um DTO."
+    )
+    public OperadorResponseDto atualizarOperador(@PathVariable Integer id, @RequestBody @Valid OperadorDto operadorDto){
+        return operadorService.atualizarOperador(id, operadorDto);
     }
     
     @GetMapping

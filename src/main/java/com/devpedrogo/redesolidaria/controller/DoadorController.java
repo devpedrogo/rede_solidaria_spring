@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -37,6 +38,16 @@ public class DoadorController {
     @ResponseStatus(HttpStatus.CREATED)
     public void cadastrarDoador(@Valid @RequestBody DoadorDto doadorDto) throws Exception {
         doadorService.criarDoador(doadorDto);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Atualizar doador por ID", 
+        description = "Atualiza um doador no sistema a partir de um ID e um DTO."
+    )
+    public DoadorResponseDto atualizarDoador(@PathVariable Integer id, @RequestBody @Valid DoadorDto doadorDto){
+        return doadorService.atualizarDoador(id, doadorDto);
     }
 
     @GetMapping

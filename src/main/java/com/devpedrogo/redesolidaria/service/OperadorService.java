@@ -18,6 +18,7 @@ import com.devpedrogo.redesolidaria.repository.IOperadorRepository;
 import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -68,5 +69,21 @@ public class OperadorService {
         return operadorRepository.findById(id)
                     .map(entity -> new OperadorResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
+    }
+
+    @Transactional
+    public OperadorResponseDto atualizarOperador(Integer id, OperadorDto operadorDto){
+        OperadorEntity operador = operadorRepository.findById(id)
+                    .orElseThrow(() -> new RegraDeNegocioException("Operador com id [" + id + "] não encontrado!"));
+
+        operador.setNome(operadorDto.getNome());
+        operador.setTelefone(operadorDto.getTelefone());
+        operador.setEndereco(operadorDto.getEndereco());
+        operador.setEmail(operadorDto.getEmail());
+        operador.setSenha(passwordEncoder.encode(operadorDto.getSenha()));
+        
+        OperadorEntity operadorAtualizado = operadorRepository.save(operador);
+
+        return new OperadorResponseDto(operadorAtualizado);
     }
 }

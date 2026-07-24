@@ -16,6 +16,7 @@ import com.devpedrogo.redesolidaria.repository.IAdminRepository;
 import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -60,5 +61,21 @@ public class AdminService {
         return adminRepository.findById(id)
                     .map(entity -> new AdminResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Admin não encontrado com ID: " + id));
+    }
+
+    @Transactional
+    public AdminResponseDto atualizarAdmin(Integer id, AdminDto adminDto){
+        AdminEntity admin = adminRepository.findById(id)
+                    .orElseThrow(() -> new RegraDeNegocioException("Admin com id [" + id + "] não encontrado!"));
+
+        admin.setNome(adminDto.nome());
+        admin.setTelefone(adminDto.telefone());
+        admin.setEndereco(adminDto.endereco());
+        admin.setEmail(adminDto.email());
+        admin.setSenha(passwordEncoder.encode(adminDto.senha()));
+        
+        AdminEntity adminAtualizado = adminRepository.save(admin);
+
+        return new AdminResponseDto(adminAtualizado);
     }
 }
