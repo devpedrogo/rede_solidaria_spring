@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.config.TokenProvider;
 import com.devpedrogo.redesolidaria.dto.LoginRequestDto;
 import com.devpedrogo.redesolidaria.dto.TokenResponseDto;
+import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
+import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,9 +31,28 @@ public class AuthenticationService {
 
             //authentication provider -> userdetailsservice -> passwordEncoder.matches() -> autenticado
 
+            UsuarioEntity usuario = (UsuarioEntity) authentication.getPrincipal();
+
+            // 1. Pega a role principal da coleção de perfis
+            String role = usuario.getPerfis().stream()
+                .map(Perfil::getAuthority) // Pega a String "ROLE_ADMIN", etc.
+                .filter(r -> r.equals("ROLE_ADMIN")) // Dá prioridade se for Admin
+                .findFirst()
+                .orElseGet(() -> usuario.getPerfis().stream()
+                    .map(Perfil::getAuthority)
+                    .findFirst()
+                    .orElse("ROLE_OPERADOR")); // Fallback caso esteja vazio
+
             String token = tokenProvider.gerarToken(authentication);
 
-            return new TokenResponseDto(token, expirationTime);
+            return new TokenResponseDto(
+                token,
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                role,
+                expirationTime
+            );
         }catch(BadCredentialsException e){
             throw new RegraDeNegocioException("Credencias Inválidas");
         }catch(Exception e){
