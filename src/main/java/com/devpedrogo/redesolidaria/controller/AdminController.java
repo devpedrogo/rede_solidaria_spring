@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,5 +69,14 @@ public class AdminController {
     public ResponseEntity<AdminResponseDto> listarAdmPorId(@PathVariable Integer id) {
         AdminResponseDto admin = adminService.listarPorId(id);
         return ResponseEntity.ok(admin);
+    }
+
+    @DeleteMapping("{id}")
+    @Operation(
+        summary = "Inativa administradores por ID", 
+        description = "Inativa os administradores cadastrados no sistema por ID."
+    )
+    public AdminResponseDto inativarAdmin(@PathVariable Integer id){
+        return adminService.inativarAdmin(id);
     }
 }
