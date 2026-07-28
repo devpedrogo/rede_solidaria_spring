@@ -1,6 +1,7 @@
 package com.devpedrogo.redesolidaria.dto;
 
 import com.devpedrogo.redesolidaria.enums.NivelPrioridade;
+import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.enums.TipoBeneficiario;
 import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
 
@@ -11,7 +12,8 @@ public record BeneficiarioResponseDto(
     String telefone,
     String endereco,
     TipoBeneficiario tipoBeneficiario,
-    NivelPrioridade nivelPrioridade
+    NivelPrioridade nivelPrioridade,
+    StatusUsuario status
 ) {
     // Construtor auxiliar para facilitar a conversao no Service
     public BeneficiarioResponseDto(BeneficiarioEntity entity) {
@@ -21,7 +23,8 @@ public record BeneficiarioResponseDto(
             entity.getTelefone(),
             entity.getEndereco(),
             entity.getTipoBeneficiario(),
-            entity.getNivelPrioridade()
+            entity.getNivelPrioridade(),
+            entity.getStatus()
         );
     }
 }
