@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioDto;
 import com.devpedrogo.redesolidaria.dto.BeneficiarioResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.BeneficiarioEntity;
 import com.devpedrogo.redesolidaria.repository.IBeneficiarioRepository;
@@ -72,5 +73,19 @@ public class BeneficiarioService {
         BeneficiarioEntity beneficiarioAtualizado = beneficiarioRepository.save(beneficiario);
 
         return new BeneficiarioResponseDto(beneficiarioAtualizado);
+    }
+
+    @Transactional // COM ESSA ANOTACAO NAO PRECISA REALIZAR O SAVE() NO BANCO
+    public BeneficiarioResponseDto inativarBeneficiario(Integer id){
+        BeneficiarioEntity beneficiario = beneficiarioRepository.findById(id)
+                    .orElseThrow(() -> new RegraDeNegocioException("Beneficiário não encontrado com o id: " + id));
+
+        if(beneficiario.getStatus().equals(StatusUsuario.INATIVO)){
+            throw new RegraDeNegocioException("Beneficiário com id [" + id + "] já está INATIVO no sistema");
+        }
+
+        beneficiario.setStatus(StatusUsuario.INATIVO);
+
+        return new BeneficiarioResponseDto(beneficiario);
     }
 }
