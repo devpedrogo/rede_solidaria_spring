@@ -11,6 +11,7 @@ import com.devpedrogo.redesolidaria.config.TokenProvider;
 import com.devpedrogo.redesolidaria.dto.LoginRequestDto;
 import com.devpedrogo.redesolidaria.dto.TokenResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 
@@ -32,6 +33,11 @@ public class AuthenticationService {
             //authentication provider -> userdetailsservice -> passwordEncoder.matches() -> autenticado
 
             UsuarioEntity usuario = (UsuarioEntity) authentication.getPrincipal();
+
+            // Verificando se o usuario está inativo e impedindo o login
+            if(usuario.getStatus().equals(StatusUsuario.INATIVO)){
+                throw new RegraDeNegocioException("Usuario INATIVO no sistema, não é possivel logar");
+            }
 
             // 1. Pega a role principal da coleção de perfis
             String role = usuario.getPerfis().stream()

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
 import com.devpedrogo.redesolidaria.dto.OperadorResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.OperadorEntity;
 import com.devpedrogo.redesolidaria.model.UsuarioEntity;
@@ -85,5 +86,19 @@ public class OperadorService {
         OperadorEntity operadorAtualizado = operadorRepository.save(operador);
 
         return new OperadorResponseDto(operadorAtualizado);
+    }
+
+    @Transactional // COM ESSA ANOTACAO NAO PRECISA REALIZAR O SAVE() NO BANCO
+    public OperadorResponseDto inativarOperador(Integer id){
+        OperadorEntity operador = operadorRepository.findById(id)
+                    .orElseThrow(() -> new RegraDeNegocioException("Operador não encontrado com o id: " + id));
+
+        if(operador.getStatus().equals(StatusUsuario.INATIVO)){
+            throw new RegraDeNegocioException("Operador com id [" + id + "] já está INATIVO no sistema");
+        }
+
+        operador.setStatus(StatusUsuario.INATIVO);
+
+        return new OperadorResponseDto(operador);
     }
 }

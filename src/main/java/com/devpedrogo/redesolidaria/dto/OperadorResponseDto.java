@@ -1,5 +1,6 @@
 package com.devpedrogo.redesolidaria.dto;
 
+import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.model.OperadorEntity;
 
 // OperadorResponseDto.java
@@ -9,7 +10,8 @@ public record OperadorResponseDto(
     String email,
     String telefone,
     String endereco,
-    String matricula
+    String matricula,
+    StatusUsuario status
 ) {
     // Construtor auxiliar para facilitar a conversao no Service
     public OperadorResponseDto(OperadorEntity entity) {
@@ -19,7 +21,8 @@ public record OperadorResponseDto(
             entity.getEmail(),
             entity.getTelefone(),
             entity.getEndereco(),
-            entity.getMatricula()
+            entity.getMatricula(),
+            entity.getStatus()
         );
     }
 }

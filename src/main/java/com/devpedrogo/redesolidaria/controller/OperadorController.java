@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,8 +37,8 @@ public class OperadorController {
         description = "Cadastra um novo operador no sistema."
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public void cadastrarOperador(@Valid @RequestBody OperadorDto operadorDto) throws Exception {
-        operadorService.cadastrarOperador(operadorDto);
+    public OperadorResponseDto cadastrarOperador(@Valid @RequestBody OperadorDto operadorDto) throws Exception {
+        return operadorService.cadastrarOperador(operadorDto);
     }
 
     @PutMapping("/{id}")
@@ -68,5 +69,14 @@ public class OperadorController {
     public ResponseEntity<OperadorResponseDto> listarOpPorId(@PathVariable Integer id) {
         OperadorResponseDto operador = operadorService.listarPorId(id);
         return ResponseEntity.ok(operador);
+    }
+
+    @DeleteMapping("{id}")
+    @Operation(
+        summary = "Inativa operadores por ID", 
+        description = "Inativa os operadores cadastrados no sistema por ID."
+    )
+    public OperadorResponseDto inativarOperador(@PathVariable Integer id){
+        return operadorService.inativarOperador(id);
     }
 }
