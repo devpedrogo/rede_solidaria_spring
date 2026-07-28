@@ -72,6 +72,10 @@ public class BeneficiarioController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(
+        summary = "Inativa beneficiarios por ID", 
+        description = "Inativa os beneficiarios cadastrados no sistema por ID."
+    )
     public BeneficiarioResponseDto inativarBeneficiario(@PathVariable Integer id){
         return beneficiarioService.inativarBeneficiario(id);
     }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.devpedrogo.redesolidaria.dto.DoadorDto;
 import com.devpedrogo.redesolidaria.dto.DoadorResponseDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
+import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.DoadorEntity;
 import com.devpedrogo.redesolidaria.repository.IDoadorRepository;
@@ -69,5 +70,19 @@ public class DoadorService {
         DoadorEntity doadorAtualizado = doadorRepository.save(doador);
 
         return new DoadorResponseDto(doadorAtualizado);
+    }
+
+    @Transactional // COM ESSA ANOTACAO NAO PRECISA REALIZAR O SAVE() NO BANCO
+    public DoadorResponseDto inativarDoador(Integer id){
+        DoadorEntity doador = doadorRepository.findById(id)
+                    .orElseThrow(() -> new RegraDeNegocioException("Doador não encontrado com o id: " + id));
+
+        if(doador.getStatus().equals(StatusUsuario.INATIVO)){
+            throw new RegraDeNegocioException("Doador com id [" + id + "] já está INATIVO no sistema");
+        }
+
+        doador.setStatus(StatusUsuario.INATIVO);
+
+        return new DoadorResponseDto(doador);
     }
 }
