@@ -26,6 +26,7 @@ public class AuthenticationService {
     @Value("${jwt.expiration}")
     private long expirationTime;
 
+    @SuppressWarnings("null") // pra parar o warning no vscode
     public TokenResponseDto login(LoginRequestDto loginRequestDto){
         try{
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.email(), loginRequestDto.senha()));
