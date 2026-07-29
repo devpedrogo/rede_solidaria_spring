@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devpedrogo.redesolidaria.dto.AdminDto;
 import com.devpedrogo.redesolidaria.dto.AdminResponseDto;
+import com.devpedrogo.redesolidaria.dto.AdminUpdateDto;
 import com.devpedrogo.redesolidaria.service.AdminService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,7 @@ public class AdminController {
         description = "Cadastra um novo administrador no sistema."
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public AdminResponseDto cadastrarAdmin(AdminDto adminDto){
+    public AdminResponseDto cadastrarAdmin(@RequestBody @Valid AdminDto adminDto){
         return adminService.cadastrarAdmin(adminDto);
     }
 
@@ -47,7 +48,7 @@ public class AdminController {
         summary = "Atualizar admin por ID", 
         description = "Atualiza um admin no sistema a partir de um ID e um DTO."
     )
-    public AdminResponseDto atualizarAdmin(@PathVariable Integer id, @RequestBody @Valid AdminDto adminDto){
+    public AdminResponseDto atualizarAdmin(@PathVariable Integer id, @RequestBody @Valid AdminUpdateDto adminDto){
         return adminService.atualizarAdmin(id, adminDto);
     }
 

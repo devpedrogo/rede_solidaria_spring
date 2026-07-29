@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
 import com.devpedrogo.redesolidaria.dto.OperadorResponseDto;
+import com.devpedrogo.redesolidaria.dto.OperadorUpdateDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
@@ -73,15 +74,15 @@ public class OperadorService {
     }
 
     @Transactional
-    public OperadorResponseDto atualizarOperador(Integer id, OperadorDto operadorDto){
+    public OperadorResponseDto atualizarOperador(Integer id, OperadorUpdateDto operadorDto){
         OperadorEntity operador = operadorRepository.findById(id)
                     .orElseThrow(() -> new RegraDeNegocioException("Operador com id [" + id + "] não encontrado!"));
 
-        operador.setNome(operadorDto.getNome());
-        operador.setTelefone(operadorDto.getTelefone());
-        operador.setEndereco(operadorDto.getEndereco());
-        operador.setEmail(operadorDto.getEmail());
-        operador.setSenha(passwordEncoder.encode(operadorDto.getSenha()));
+        operador.setNome(operadorDto.nome());
+        operador.setTelefone(operadorDto.telefone());
+        operador.setEndereco(operadorDto.endereco());
+        operador.setEmail(operadorDto.email());
+        operador.setSenha(passwordEncoder.encode(operadorDto.senha()));
         
         OperadorEntity operadorAtualizado = operadorRepository.save(operador);
 

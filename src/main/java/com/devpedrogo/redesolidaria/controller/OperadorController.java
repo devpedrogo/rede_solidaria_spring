@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devpedrogo.redesolidaria.dto.OperadorDto;
 import com.devpedrogo.redesolidaria.dto.OperadorResponseDto;
+import com.devpedrogo.redesolidaria.dto.OperadorUpdateDto;
 import com.devpedrogo.redesolidaria.service.OperadorService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +48,7 @@ public class OperadorController {
         summary = "Atualizar operador por ID", 
         description = "Atualiza um operador no sistema a partir de um ID e um DTO."
     )
-    public OperadorResponseDto atualizarOperador(@PathVariable Integer id, @RequestBody @Valid OperadorDto operadorDto){
+    public OperadorResponseDto atualizarOperador(@PathVariable Integer id, @RequestBody @Valid OperadorUpdateDto operadorDto){
         return operadorService.atualizarOperador(id, operadorDto);
     }
     

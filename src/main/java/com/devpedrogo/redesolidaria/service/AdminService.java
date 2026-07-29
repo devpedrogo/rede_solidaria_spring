@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.devpedrogo.redesolidaria.dto.AdminDto;
 import com.devpedrogo.redesolidaria.dto.AdminResponseDto;
+import com.devpedrogo.redesolidaria.dto.AdminUpdateDto;
 import com.devpedrogo.redesolidaria.enums.Perfil;
 import com.devpedrogo.redesolidaria.enums.StatusUsuario;
 import com.devpedrogo.redesolidaria.exception.RegraDeNegocioException;
 import com.devpedrogo.redesolidaria.model.AdminEntity;
-import com.devpedrogo.redesolidaria.model.UsuarioEntity;
 import com.devpedrogo.redesolidaria.repository.IAdminRepository;
 import com.devpedrogo.redesolidaria.repository.IUsuarioRepository;
 
@@ -30,15 +30,17 @@ public class AdminService {
     private final PasswordEncoder passwordEncoder;
 
     public AdminResponseDto cadastrarAdmin(AdminDto adminDto){
-        UsuarioEntity usuario = usuarioRepository.findByEmail(adminDto.email()).orElse(null);
+        if (adminDto.email() == null || adminDto.email().isBlank()) {
+            throw new RegraDeNegocioException("O e-mail é obrigatório para cadastrar um administrador.");
+        }
 
-        if(usuario != null){
-            throw new RegraDeNegocioException("Email já pertence a outro usuário");
+        if (usuarioRepository.existsByEmail(adminDto.email().trim())) {
+            throw new RegraDeNegocioException("E-mail já pertence a outro usuário");
         }
 
         AdminEntity novoAdmin = AdminEntity.builder()
-                .nome(adminDto.nome())
-                .email(adminDto.email())
+                .nome(adminDto.nome().trim())
+                .email(adminDto.email().trim())
                 .senha(passwordEncoder.encode(adminDto.senha()))
                 .telefone(adminDto.telefone())
                 .endereco(adminDto.endereco())
@@ -67,7 +69,7 @@ public class AdminService {
     }
 
     @Transactional
-    public AdminResponseDto atualizarAdmin(Integer id, AdminDto adminDto){
+    public AdminResponseDto atualizarAdmin(Integer id, AdminUpdateDto adminDto){
         AdminEntity admin = adminRepository.findById(id)
                     .orElseThrow(() -> new RegraDeNegocioException("Admin com id [" + id + "] não encontrado!"));
 
@@ -75,7 +77,10 @@ public class AdminService {
         admin.setTelefone(adminDto.telefone());
         admin.setEndereco(adminDto.endereco());
         admin.setEmail(adminDto.email());
-        admin.setSenha(passwordEncoder.encode(adminDto.senha()));
+        
+        if (adminDto.senha() != null && !adminDto.senha().isBlank()) {
+            admin.setSenha(passwordEncoder.encode(adminDto.senha()));
+        }
         
         AdminEntity adminAtualizado = adminRepository.save(admin);
 
