@@ -78,7 +78,7 @@ Com o servidor em execução, acesse os links para visualizar e testar as rotas 
 ### Passos:
 
 1. **Clonar o repositório:**
-   git clone [https://github.com/seu-usuario/rede-solidaria-backend.git](https://github.com/seu-usuario/rede-solidaria-backend.git)
+   git clone [https://github.com/devpedrogo/rede_solidaria_spring.git](https://github.com/devpedrogo/rede_solidaria_spring.git)
    cd rede-solidaria-backend
 
 2. **Configurar o banco de dados:**
