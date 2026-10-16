@@ -72,6 +72,8 @@ public abstract class UsuarioEntity implements UserDetails{
         name = "usuario_perfis", 
         joinColumns = @JoinColumn(name = "usuario_id")
     )
+    
+    @Builder.Default
     @Column(name = "perfil")
     @Enumerated(EnumType.STRING)
     private Collection<Perfil> perfis = new HashSet<>();
