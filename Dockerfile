@@ -6,8 +6,8 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-# Compila o projeto gerando o .jar e ignora os testes para agilizar o build
-RUN mvn clean package -DskipTests
+# Compila o projeto gerando o .jar ignorando totalmente a compilação e execução dos testes
+RUN mvn clean package -Dmaven.test.skip=true
 
 # Estágio 2: Execução do JAR
 FROM eclipse-temurin:21-jre
