@@ -76,10 +76,10 @@ class AdminServiceTest {
     void setUp() {
         adminDto = new AdminDto(
                 "Lucas Mendes",
-                "lucas@email.com",
-                "123456",
                 "79999990000",
-                "Rua Principal, 10"
+                "lucas@email.com",
+                "Rua Principal, 10",
+                "123456"
         );
 
         adminEntity = AdminEntity.builder()
@@ -129,7 +129,7 @@ class AdminServiceTest {
         @DisplayName("Deve lançar RegraDeNegocioException se o e-mail for nulo ou em branco")
         void deveLancarExcecaoQuandoEmailForInvalido() {
             // Arrange
-            AdminDto dtoEmailNulo = new AdminDto("Lucas", null, "123", "79999990000", "Rua A");
+            AdminDto dtoEmailNulo = new AdminDto("Lucas", "79999990000", null, "Rua A", "123");
 
             // Act & Assert
             RegraDeNegocioException exception = assertThrows(
