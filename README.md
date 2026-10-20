@@ -1,109 +1,95 @@
 # 🛡️ Rede Solidária — Backend API
 
-API RESTful desenvolvida em **Java + Spring Boot** para a plataforma **Rede Solidária**. O sistema gerencia doadores, beneficiários, doações e solicitações para projetos sociais, contando com autenticação robusta via **JWT**, controle de acesso baseado em perfis (RBAC) e persistência em banco relacional PostgreSQL.
+API RESTful desenvolvida em **Java 17 & Spring Boot 3** para gestão de doações e projetos sociais. A aplicação conta com controle de acesso por perfis (RBAC), autenticação via JWT, banco PostgreSQL via Supabase e suporte a conteinerização com Docker.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🌐 Links Rápidos & Live Demo
 
-- **Linguagem:** Java 17+ / 21
-- **Framework Principal:** Spring Boot 3
-- **Segurança:** Spring Security + JWT (JSON Web Tokens)
-- **Persistência de Dados:** Spring Data JPA / Hibernate
-- **Banco de Dados:** PostgreSQL (Supabase / local)
+- **Backend (Render):** [https://rede-solidaria-api.onrender.com](https://rede-solidaria-api.onrender.com)
+- **Documentação Swagger UI:** [https://rede-solidaria-api.onrender.com/swagger-ui/index.html](https://rede-solidaria-api.onrender.com/swagger-ui/index.html)
+- **Frontend App (Vercel):** [https://rede-solidaria-frontend.vercel.app](https://rede-solidaria-frontend.vercel.app)
+
+> ⚡ **Nota sobre o Deploy no Render (Free Tier):** Devido ao *cold start* da hospedagem gratuita, a primeira requisição após inatividade pode levar entre 30 e 50 segundos para inicializar o container. As requisições seguintes possuem resposta imediata.
+
+---
+
+## 🛠️ Tech Stack & Arquitetura
+
+- **Core:** Java 17, Spring Boot 3, Maven
+- **Segurança:** Spring Security, JWT (JSON Web Token), RBAC
+- **Persistência:** Spring Data JPA, Hibernate, PostgreSQL (Supabase / PgBouncer)
+- **Testes & Qualidade:** JUnit 5, MockMvc, H2 Database (Testes de Integração)
+- **DevOps & Deploy:** Docker, Dockerfile, Render, Vercel (Front)
 - **Documentação:** OpenAPI 3.0 / Swagger UI (Springdoc)
-- **Gerenciador de Dependências:** Maven
-- **Hospedagem / Deploy:** Render (Docker Container)
 
 ---
 
-## 🚀 Funcionalidades Principais
+## 🔑 Funcionalidades Chave
 
-- 🔐 **Autenticação & Autorização:** Login com emissão de token JWT e validação via interceptores de segurança.
-- 👥 **Gestão de Usuários e Perfis:** Diferenciação de permissões entre Administradores, Operadores e Usuários.
-- 🤝 **Gestão Social:** CRUD de doadores, beneficiários, solicitações e controle de fluxo de doações.
-- 📄 **Documentação Interativa:** Interface Swagger para testes e consumo dos endpoints da API.
+- 🔐 **Autenticação & RBAC:** Emissão e validação de tokens JWT com restrições por perfil (Admin, Operador, Doador e Beneficiário).
+- 🤝 **Gestão Social:** CRUDs e regras de negócio para administradores, operadores, doadores e beneficiários.
+- 📦 **Estoque Global de Doações:** Controle centralizado com incremento/decremento dinâmico de itens e auditoria de histórico.
+- 📋 **Fluxo de Solicitações:** Sistema de pedidos com validações de prioridade, status e vínculo de beneficiários.
 
 ---
 
-## ⚙️ Variáveis de Ambiente e Configuração
+## ⚙️ Variáveis de Ambiente
 
-Para rodar a aplicação localmente ou em produção, configure as variáveis de ambiente no arquivo application.properties (ou no painel do provedor de hospedagem):
+Crie o arquivo `application.properties` ou defina as variáveis no seu ambiente de execução:
 
+```properties
 server.port=8080
 
-# Banco de Dados PostgreSQL
+# Banco de Dados
 SPRING_DATASOURCE_URL=jdbc:postgresql://<HOST>:<PORT>/<DATABASE>?prepareThreshold=0
-SPRING_DATASOURCE_USERNAME=<SEU_USUARIO>
-SPRING_DATASOURCE_PASSWORD=<SUA_SENHA>
+SPRING_DATASOURCE_USERNAME=<USUARIO>
+SPRING_DATASOURCE_PASSWORD=<SENHA>
 
 # JPA / Hibernate
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
 
 # Segurança / JWT
-jwt.secret=<SUA_CHAVE_SECRETA_JWT_MUITO_LONGA_E_SEGURA>
+jwt.secret=<CHAVE_SECRETA_JWT>
 jwt.expiration=86400000
+```
 
-> **Nota de Arquitetura (PgBouncer / Supabase):** O parâmetro `?prepareThreshold=0` na URL de conexão do PostgreSQL é fundamental para desativar os Prepared Statements do driver do PostgreSQL no Java, evitando incompatibilidades de conexão (PSQLException) com o pooler de transações PgBouncer do Supabase.
-
----
-
-## 🔒 Segurança e CORS
-
-A aplicação possui um **CorsConfigurationSource** centralizado na classe SecurityConfiguration, autorizando requisições originadas pelo frontend e garantindo a liberação prévia das chamadas preflight (OPTIONS):
-
-- **Métodos permitidos:** GET, POST, PUT, DELETE, OPTIONS, PATCH.
-- **Cabeçalhos permitidos:** Authorization, Content-Type, X-Requested-With, Accept.
+> **Dica de Infra:** O parâmetro `?prepareThreshold=0` na URL do PostgreSQL desativa Prepared Statements para evitar incompatibilidades de conexão com o pooler (PgBouncer) do Supabase.
 
 ---
 
-## 📖 Documentação da API (Swagger UI)
+## 🚀 Como Rodar Localmente
 
-Com o servidor em execução, acesse os links para visualizar e testar as rotas da API:
+### Opção 1: Via Docker (Recomendado)
 
-- **Swagger UI:** http://localhost:8080/swagger-ui/index.html
-- **OpenAPI Spec (JSON):** http://localhost:8080/v3/api-docs
+```bash
+# Clone o repositório
+git clone https://github.com/devpedrogo/rede_solidaria_spring.git
+cd rede_solidaria_spring
 
----
+# Construa a imagem Docker
+docker build -t rede-solidaria-api .
 
-## 💻 Como Rodar o Projeto Localmente
+# Execute o container (defina as variáveis necessárias)
+docker run -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL="jdbc:postgresql://<HOST>:<PORT>/<DATABASE>?prepareThreshold=0" \
+  -e SPRING_DATASOURCE_USERNAME="<USUARIO>" \
+  -e SPRING_DATASOURCE_PASSWORD="<SENHA>" \
+  -e JWT_SECRET="<SUA_CHAVE_SECRETA>" \
+  rede-solidaria-api
+```
 
-### Pré-requisitos
-- **Java JDK 17** ou superior instalado
-- **Maven** instalado (ou utilize o wrapper ./mvnw)
-- Instância do **PostgreSQL** ativa
+### Opção 2: Via Maven & Java
 
-### Passos:
+```bash
+# Compile e execute
+./mvnw spring-boot:run
+```
 
-1. **Clonar o repositório:**
-   git clone [https://github.com/devpedrogo/rede_solidaria_spring.git](https://github.com/devpedrogo/rede_solidaria_spring.git)
-   cd rede-solidaria-backend
-
-2. **Configurar o banco de dados:**
-   Crie um banco de dados PostgreSQL local chamado redesolidaria e ajuste as credenciais no src/main/resources/application.properties.
-
-3. **Compilar e rodar a aplicação:**
-   # Com Maven instalado:
-   mvn spring-boot:run
-
-   # Ou usando o Maven Wrapper:
-   ./mvnw spring-boot:run
-
-4. A API estará pronta para receber requisições em http://localhost:8080.
+Acesse a API e a documentação em: `http://localhost:8080/swagger-ui/index.html`
 
 ---
 
-## ☁️ Hospedagem e Cold Start (Render Free Tier)
+## 📄 Licença
 
-O backend encontra-se hospedado no plano gratuito do **Render**. 
-
-- Por padrão, serviços inativos por mais de 15 minutos entram em modo de sleep (hibernação).
-- O primeiro acesso após um período de inatividade aciona um cold start no container Java, que pode levar de **30 a 50 segundos** para inicializar completamente. As chamadas subsequentes responderão normalmente com alto desempenho.
-
----
-
-## 📜 Licença
-
-Este projeto é de uso acadêmico e para portfólio de desenvolvimento de software.
+Projeto desenvolvido para fins acadêmicos e portfólio profissional.
