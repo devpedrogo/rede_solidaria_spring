@@ -52,6 +52,7 @@ public class ItemDoacaoService {
                         .categoria(dto.getCategoria())
                         .quantidade(0)
                         .status(StatusItem.DISPONIVEL)
+                        .dataAtualizacao(LocalDateTime.now())
                         .build());
 
         // 3. Incrementa o saldo global com os dados vindos do DTO
