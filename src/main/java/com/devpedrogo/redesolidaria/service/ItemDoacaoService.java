@@ -36,6 +36,12 @@ public class ItemDoacaoService {
     private final IDoacaoEfetivadaRepository doacaoEfetivadaRepository;
     private final IDoadorRepository doadorRepository;
 
+    /**
+     * Registra uma doação, atualiza o estoque global e grava o histórico da entrada.
+     *
+     * @param dto dados do item, quantidade doada e identificador do doador
+     * @throws RegraDeNegocioException se o doador informado não existir
+     */
     @Transactional
     public void receberDoacao(ItemDoacaoDto dto) {
         
@@ -76,6 +82,14 @@ public class ItemDoacaoService {
         doacaoEfetivadaRepository.save(historico);
     }
 
+    /**
+     * Pesquisa itens de doação com os filtros informados e paginação, restringindo
+     * os campos de ordenação permitidos.
+     *
+     * @param filtro critérios para filtrar os itens
+     * @param pageable configuração de página, tamanho e ordenação
+     * @return página de itens encontrados convertidos para DTOs de resposta
+     */
     public Page<ItemDoacaoResponseDto> buscarComFiltro(ItemFiltroDto filtro, Pageable pageable) {
         Specification<ItemDoacaoEntity> spec = ItemSpecification.comFiltros(filtro);
 
@@ -95,6 +109,13 @@ public class ItemDoacaoService {
                 .map(item -> new ItemDoacaoResponseDto(item)); 
     }
 
+    /**
+     * Busca um item de doação pelo identificador.
+     *
+     * @param id identificador do item
+     * @return dados do item encontrado
+     * @throws EntityNotFoundException se não houver item com o identificador informado
+     */
     public ItemDoacaoResponseDto listarPorId(Integer id){
         return itemDoacaoRepository.findById(id)
                     .map(entity -> new ItemDoacaoResponseDto(entity))
