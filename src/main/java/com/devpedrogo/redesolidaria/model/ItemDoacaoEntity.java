@@ -1,6 +1,7 @@
 package com.devpedrogo.redesolidaria.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import com.devpedrogo.redesolidaria.enums.StatusItem;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 @Entity
 @Table(name = "itens_doacao")
@@ -37,4 +39,13 @@ public class ItemDoacaoEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private StatusItem status;
+
+    // --- CICLO DE VIDA DO JPA ---
+    @PrePersist
+    @PreUpdate
+    public void preencherDataAtualizacao() {
+        if (this.dataAtualizacao == null) {
+            this.dataAtualizacao = LocalDateTime.now();
+        }
+    }
 }
