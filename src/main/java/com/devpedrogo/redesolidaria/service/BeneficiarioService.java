@@ -22,6 +22,13 @@ import lombok.RequiredArgsConstructor;
 public class BeneficiarioService {
     private final IBeneficiarioRepository beneficiarioRepository;
 
+    /**
+     * Cria um beneficiário com o perfil correspondente e persiste seus dados.
+     *
+     * @param beneficiarioDto dados do beneficiário a cadastrar
+     * @return dados do beneficiário criado
+     * @throws Exception se ocorrer uma falha durante a criação ou persistência
+     */
     public BeneficiarioResponseDto criarBeneficiario(BeneficiarioDto beneficiarioDto) throws Exception {
         // UsuarioEntity usuario = usuarioRepository.findByEmail(beneficiarioDto.getEmail()).orElse(null);
         
@@ -46,6 +53,11 @@ public class BeneficiarioService {
         return new BeneficiarioResponseDto(beneficiarioRepository.save(novoBeneficiario));
     }
 
+    /**
+     * Recupera todos os beneficiários cadastrados.
+     *
+     * @return lista de beneficiários convertidos para DTOs de resposta
+     */
     public List<BeneficiarioResponseDto> listarBeneficiarios() {
         return beneficiarioRepository.findAll()
                 .stream()
@@ -53,12 +65,27 @@ public class BeneficiarioService {
                 .toList();
     }
 
+    /**
+     * Busca um beneficiário pelo identificador.
+     *
+     * @param id identificador do beneficiário
+     * @return dados do beneficiário encontrado
+     * @throws EntityNotFoundException se não houver beneficiário com o identificador informado
+     */
     public BeneficiarioResponseDto listarPorId(Integer id){
         return beneficiarioRepository.findById(id)
                     .map(entity -> new BeneficiarioResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
     }
 
+    /**
+     * Atualiza os dados cadastrais e de prioridade de um beneficiário.
+     *
+     * @param id identificador do beneficiário
+     * @param beneficiarioDto novos dados do beneficiário
+     * @return dados atualizados do beneficiário
+     * @throws RegraDeNegocioException se o beneficiário não for encontrado
+     */
     @Transactional
     public BeneficiarioResponseDto atualizarBeneficiario(Integer id, BeneficiarioDto beneficiarioDto){
         BeneficiarioEntity beneficiario = beneficiarioRepository.findById(id)
@@ -75,6 +102,13 @@ public class BeneficiarioService {
         return new BeneficiarioResponseDto(beneficiarioAtualizado);
     }
 
+    /**
+     * Marca um beneficiário como inativo; a alteração é persistida pela transação.
+     *
+     * @param id identificador do beneficiário
+     * @return dados do beneficiário após a inativação
+     * @throws RegraDeNegocioException se o beneficiário não existir ou já estiver inativo
+     */
     @Transactional // COM ESSA ANOTACAO NAO PRECISA REALIZAR O SAVE() NO BANCO
     public BeneficiarioResponseDto inativarBeneficiario(Integer id){
         BeneficiarioEntity beneficiario = beneficiarioRepository.findById(id)
