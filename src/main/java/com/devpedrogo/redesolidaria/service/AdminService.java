@@ -29,6 +29,13 @@ public class AdminService {
     private final IAdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Cadastra um administrador após validar o e-mail e codificar sua senha.
+     *
+     * @param adminDto dados do administrador a cadastrar
+     * @return dados do administrador persistido
+     * @throws RegraDeNegocioException se o e-mail estiver ausente ou já pertencer a um usuário
+     */
     public AdminResponseDto cadastrarAdmin(AdminDto adminDto){
         if (adminDto.email() == null || adminDto.email().isBlank()) {
             throw new RegraDeNegocioException("O e-mail é obrigatório para cadastrar um administrador.");
@@ -55,6 +62,11 @@ public class AdminService {
         return new AdminResponseDto(adminRepository.save(novoAdmin));
     }
 
+    /**
+     * Recupera todos os administradores e converte as entidades para DTOs de resposta.
+     *
+     * @return lista de administradores cadastrados
+     */
     public List<AdminResponseDto> listarAdmins() {
         return adminRepository.findAll()
                 .stream()
@@ -62,12 +74,28 @@ public class AdminService {
                 .toList();
     }
 
+    /**
+     * Busca um administrador pelo identificador.
+     *
+     * @param id identificador do administrador
+     * @return dados do administrador encontrado
+     * @throws EntityNotFoundException se não houver administrador com o identificador informado
+     */
     public AdminResponseDto listarPorId(Integer id){
         return adminRepository.findById(id)
                     .map(entity -> new AdminResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Admin não encontrado com ID: " + id));
     }
 
+    /**
+     * Atualiza os dados cadastrais do administrador; altera a senha somente quando uma nova
+     * senha não vazia for informada.
+     *
+     * @param id identificador do administrador
+     * @param adminDto novos dados cadastrais
+     * @return dados atualizados do administrador
+     * @throws RegraDeNegocioException se o administrador não for encontrado
+     */
     @Transactional
     public AdminResponseDto atualizarAdmin(Integer id, AdminUpdateDto adminDto){
         AdminEntity admin = adminRepository.findById(id)
@@ -87,6 +115,15 @@ public class AdminService {
         return new AdminResponseDto(adminAtualizado);
     }
 
+    /**
+     * Inativa um administrador, impedindo a auto-inativação e preservando o mínimo de
+     * administradores ativos definido pelo sistema.
+     *
+     * @param id identificador do administrador a inativar
+     * @return dados do administrador após a inativação
+     * @throws RegraDeNegocioException se o administrador não existir, já estiver inativo,
+     *         for o usuário autenticado ou a operação violar a quantidade mínima de ativos
+     */
     @Transactional // COM ESSA ANOTACAO NAO PRECISA REALIZAR O SAVE() NO BANCO
     public AdminResponseDto inativarAdmin(Integer id){
         AdminEntity admin = adminRepository.findById(id)
