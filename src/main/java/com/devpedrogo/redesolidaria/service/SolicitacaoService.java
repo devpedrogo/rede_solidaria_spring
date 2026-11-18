@@ -28,6 +28,15 @@ public class SolicitacaoService {
     private final IItemDoacaoRepository itemRepository;
     private final IBeneficiarioRepository beneficiarioRepository;
 
+    /**
+     * Cria uma solicitação pendente, valida a disponibilidade e a quantidade em estoque,
+     * e reserva a quantidade solicitada.
+     *
+     * @param dto dados do item, beneficiário, quantidade e justificativa
+     * @return dados da solicitação criada
+     * @throws EntityNotFoundException se o item ou beneficiário não existir
+     * @throws RegraDeNegocioException se o item não estiver disponível ou o estoque for insuficiente
+     */
     @Transactional
     public SolicitacaoResponseDto criarSolicitacao(SolicitacaoCreateDto dto) {
         // 1. Buscar o Item
@@ -69,6 +78,18 @@ public class SolicitacaoService {
         return new SolicitacaoResponseDto(salva);
     }
 
+    /**
+     * Altera o status de uma solicitação respeitando suas transições permitidas.
+     * Ao rejeitá-la, devolve a quantidade reservada ao estoque; ao concluí-la,
+     * marca como esgotado um item cujo estoque esteja zerado.
+     *
+     * @param id identificador da solicitação
+     * @param novoStatus status de destino
+     * @return dados da solicitação atualizada
+     * @throws EntityNotFoundException se a solicitação não existir
+     * @throws RegraDeNegocioException se a transição já tiver sido aplicada ou a solicitação
+     *         estiver concluída ou rejeitada
+     */
     @Transactional
     public SolicitacaoResponseDto alterarStatus(Integer id, StatusSolicitacao novoStatus) {
         SolicitacaoEntity solicitacao = solicitacaoRepository.findById(id)
@@ -106,6 +127,11 @@ public class SolicitacaoService {
         return new SolicitacaoResponseDto(solicitacao); 
     }
 
+    /**
+     * Recupera todas as solicitações cadastradas.
+     *
+     * @return lista de solicitações convertidas para DTOs de resposta
+     */
     public List<SolicitacaoResponseDto> listarSolicitacoes() {
         return solicitacaoRepository.findAll()
                 .stream()
@@ -113,6 +139,13 @@ public class SolicitacaoService {
                 .toList();
     }
 
+    /**
+     * Busca uma solicitação pelo identificador.
+     *
+     * @param id identificador da solicitação
+     * @return dados da solicitação encontrada
+     * @throws EntityNotFoundException se não houver solicitação com o identificador informado
+     */
     public SolicitacaoResponseDto buscarPorId(Integer id) {
         return solicitacaoRepository.findById(id)
                 .map(entity -> new SolicitacaoResponseDto(entity))
