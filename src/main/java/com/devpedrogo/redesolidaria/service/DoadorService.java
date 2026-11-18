@@ -23,6 +23,13 @@ public class DoadorService {
 
     private final IDoadorRepository doadorRepository;
 
+    /**
+     * Cadastra um doador com o perfil correspondente.
+     *
+     * @param doadorDto dados do doador a cadastrar
+     * @return dados do doador persistido
+     * @throws Exception se ocorrer uma falha durante a criação ou persistência
+     */
     public DoadorResponseDto criarDoador(DoadorDto doadorDto) throws Exception {
         // UsuarioEntity usuario = usuarioRepository.findByEmail(doadorDto.getEmail()).orElse(null);
 
@@ -45,6 +52,11 @@ public class DoadorService {
         return new DoadorResponseDto(doadorRepository.save(novoDoador));
     }
 
+    /**
+     * Recupera todos os doadores cadastrados.
+     *
+     * @return lista de doadores convertidos para DTOs de resposta
+     */
     public List<DoadorResponseDto> listarDoadores() {
         return doadorRepository.findAll()
                 .stream()
@@ -52,12 +64,27 @@ public class DoadorService {
                 .toList();
     }
 
+    /**
+     * Busca um doador pelo identificador.
+     *
+     * @param id identificador do doador
+     * @return dados do doador encontrado
+     * @throws EntityNotFoundException se não houver doador com o identificador informado
+     */
     public DoadorResponseDto listarPorId(Integer id){
         return doadorRepository.findById(id)
                     .map(entity -> new DoadorResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
     }
 
+    /**
+     * Atualiza os dados cadastrais de um doador.
+     *
+     * @param id identificador do doador
+     * @param doadorDto novos dados do doador
+     * @return dados atualizados do doador
+     * @throws RegraDeNegocioException se o doador não for encontrado
+     */
     @Transactional
     public DoadorResponseDto atualizarDoador(Integer id, DoadorDto doadorDto){
         DoadorEntity doador = doadorRepository.findById(id)
@@ -72,6 +99,13 @@ public class DoadorService {
         return new DoadorResponseDto(doadorAtualizado);
     }
 
+    /**
+     * Marca um doador como inativo; a alteração é persistida pela transação.
+     *
+     * @param id identificador do doador
+     * @return dados do doador após a inativação
+     * @throws RegraDeNegocioException se o doador não existir ou já estiver inativo
+     */
     @Transactional // COM ESSA ANOTACAO NAO PRECISA REALIZAR O SAVE() NO BANCO
     public DoadorResponseDto inativarDoador(Integer id){
         DoadorEntity doador = doadorRepository.findById(id)
