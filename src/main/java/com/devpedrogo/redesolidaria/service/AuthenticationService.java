@@ -26,6 +26,14 @@ public class AuthenticationService {
     @Value("${jwt.expiration}")
     private long expirationTime;
 
+    /**
+     * Autentica o usuário, impede o acesso de contas inativas e gera o token JWT
+     * com os dados básicos e o perfil principal do usuário.
+     *
+     * @param loginRequestDto credenciais de e-mail e senha
+     * @return token de acesso e informações do usuário autenticado
+     * @throws RegraDeNegocioException se as credenciais forem inválidas ou a conta estiver inativa
+     */
     @SuppressWarnings("null") // pra parar o warning no vscode
     public TokenResponseDto login(LoginRequestDto loginRequestDto){
         try{
