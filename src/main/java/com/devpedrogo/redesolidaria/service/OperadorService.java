@@ -30,7 +30,15 @@ public class OperadorService {
     private final IUsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    
+    /**
+     * Cadastra um operador com matrícula gerada automaticamente, perfil de operador
+     * e senha codificada.
+     *
+     * @param operadorDto dados do operador a cadastrar
+     * @return dados do operador persistido
+     * @throws Exception se ocorrer uma falha durante a criação ou persistência
+     * @throws RegraDeNegocioException se o e-mail já pertencer a outro usuário
+     */
     public OperadorResponseDto cadastrarOperador(OperadorDto operadorDto) throws Exception {
         UsuarioEntity usuario = usuarioRepository.findByEmail(operadorDto.getEmail()).orElse(null);
 
@@ -60,6 +68,11 @@ public class OperadorService {
         return new OperadorResponseDto(operadorRepository.save(novoOperador));
     }
 
+    /**
+     * Recupera todos os operadores cadastrados.
+     *
+     * @return lista de operadores convertidos para DTOs de resposta
+     */
     public List<OperadorResponseDto> listarOperadores() {
         return operadorRepository.findAll()
                 .stream()
@@ -67,12 +80,27 @@ public class OperadorService {
                 .toList();
     }
 
+    /**
+     * Busca um operador pelo identificador.
+     *
+     * @param id identificador do operador
+     * @return dados do operador encontrado
+     * @throws EntityNotFoundException se não houver operador com o identificador informado
+     */
     public OperadorResponseDto listarPorId(Integer id){
         return operadorRepository.findById(id)
                     .map(entity -> new OperadorResponseDto(entity))
                     .orElseThrow(() -> new EntityNotFoundException("Doador não encontrado com ID: " + id));
     }
 
+    /**
+     * Atualiza os dados cadastrais do operador e codifica a senha recebida.
+     *
+     * @param id identificador do operador
+     * @param operadorDto novos dados do operador
+     * @return dados atualizados do operador
+     * @throws RegraDeNegocioException se o operador não for encontrado
+     */
     @Transactional
     public OperadorResponseDto atualizarOperador(Integer id, OperadorUpdateDto operadorDto){
         OperadorEntity operador = operadorRepository.findById(id)
@@ -89,6 +117,13 @@ public class OperadorService {
         return new OperadorResponseDto(operadorAtualizado);
     }
 
+    /**
+     * Marca um operador como inativo; a alteração é persistida pela transação.
+     *
+     * @param id identificador do operador
+     * @return dados do operador após a inativação
+     * @throws RegraDeNegocioException se o operador não existir ou já estiver inativo
+     */
     @Transactional // COM ESSA ANOTACAO NAO PRECISA REALIZAR O SAVE() NO BANCO
     public OperadorResponseDto inativarOperador(Integer id){
         OperadorEntity operador = operadorRepository.findById(id)
